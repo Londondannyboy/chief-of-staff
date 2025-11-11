@@ -1,0 +1,106 @@
+---
+// Profile page - shows authenticated user info
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Chief of Staff Quest</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .user-info {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        button:hover {
+            background: #b91c1c;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        a {
+            color: #0070f3;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loading" class="loading">Loading...</div>
+        <div id="profile" style="display: none;">
+            <h1>Your Profile</h1>
+            <div class="user-info">
+                <p><strong>User ID:</strong> <span id="userId"></span></p>
+                <p><strong>Email:</strong> <span id="userEmail"></span></p>
+                <p><strong>Display Name:</strong> <span id="userName"></span></p>
+            </div>
+            <button onclick="signOut()">Sign Out</button>
+            <br><br>
+            <a href="/">← Back to Home</a>
+        </div>
+        <div id="unauthenticated" style="display: none;">
+            <h1>Not Signed In</h1>
+            <p>You need to sign in to view this page.</p>
+            <a href="/auth/signin">Go to Sign In</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { StackClientApp } from "@stackframe/stack";
+
+        const stack = new StackClientApp({
+            projectId: "5ef873fa-5690-460a-bc2c-b29802508691",
+            publishableClientKey: "pck_ga54pv0h057get6j0ej1sxeacgd0kszgs800xnydnd0v0"
+        });
+
+        async function loadProfile() {
+            const user = stack.getUser();
+
+            document.getElementById('loading').style.display = 'none';
+
+            if (user) {
+                document.getElementById('profile').style.display = 'block';
+                document.getElementById('userId').textContent = user.id;
+                document.getElementById('userEmail').textContent = user.primaryEmail || 'No email';
+                document.getElementById('userName').textContent = user.displayName || 'No name set';
+            } else {
+                document.getElementById('unauthenticated').style.display = 'block';
+            }
+        }
+
+        window.signOut = async () => {
+            await stack.signOut();
+            window.location.href = '/';
+        };
+
+        loadProfile();
+    </script>
+</body>
+</html>

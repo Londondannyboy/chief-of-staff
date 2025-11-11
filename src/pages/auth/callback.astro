@@ -1,0 +1,62 @@
+---
+// Auth callback handler - Stack Auth redirects here after authentication
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticating...</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+        }
+        .loading {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <h2>Completing authentication...</h2>
+        <p>Please wait while we sign you in.</p>
+    </div>
+
+    <script type="module">
+        import { StackClientApp } from "@stackframe/stack";
+
+        const stack = new StackClientApp({
+            projectId: "5ef873fa-5690-460a-bc2c-b29802508691",
+            publishableClientKey: "pck_ga54pv0h057get6j0ej1sxeacgd0kszgs800xnydnd0v0"
+        });
+
+        // Handle the callback
+        async function handleCallback() {
+            try {
+                // Stack Auth will handle the callback automatically
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Check if user is now authenticated
+                const user = stack.getUser();
+                if (user) {
+                    window.location.href = '/profile';
+                } else {
+                    window.location.href = '/auth/signin';
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                window.location.href = '/auth/signin';
+            }
+        }
+
+        handleCallback();
+    </script>
+</body>
+</html>
