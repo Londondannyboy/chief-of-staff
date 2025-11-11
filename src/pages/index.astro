@@ -81,19 +81,34 @@ const sections = {
 <head>
   <SEO />
   <Schema type="homepage" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* Import animations */
+    @import '../styles/animations.css';
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
   <!-- Navigation -->
-  <nav class="bg-white shadow-sm">
+  <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
+      <div class="flex justify-between items-center h-20">
         <div class="flex items-center">
-          <h1 class="text-2xl font-bold text-blue-600">Chief of Staff</h1>
+          <h1 class="text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            Chief of Staff
+          </h1>
         </div>
         <div class="flex items-center space-x-8">
-          <a href="/" class="text-blue-600 font-medium">Home</a>
-          <a href="/articles" class="text-gray-700 hover:text-blue-600 font-medium">Articles</a>
-          <a href="/companies" class="text-gray-700 hover:text-blue-600 font-medium">Companies</a>
+          <a href="/" class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">Home</a>
+          <a href="/articles" class="text-sm font-semibold text-gray-700 hover:text-blue-600 transition-colors">Articles</a>
+          <a href="/companies" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
+            Companies
+          </a>
         </div>
       </div>
     </div>
@@ -101,24 +116,74 @@ const sections = {
 
   <!-- Hero Section -->
   {sections.hero && (
-    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-4xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            {sections.hero.title}
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <!-- Animated background gradient -->
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 gradient-animate"></div>
+
+      <!-- Overlay -->
+      <div class="absolute inset-0 bg-black/20"></div>
+
+      <!-- Geometric patterns -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-overlay filter blur-3xl animate-pulse animation-delay-300"></div>
+      </div>
+
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <div class="text-center max-w-5xl mx-auto">
+          <!-- Badge -->
+          <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 animate-fade-in">
+            <span class="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></span>
+            <span class="text-white/90 text-sm font-medium">The Definitive Industry Resource</span>
+          </div>
+
+          <h2 class="text-5xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight animate-fade-in-up animation-delay-100">
+            <span class="text-white drop-shadow-2xl">
+              {sections.hero.title}
+            </span>
           </h2>
-          <p class="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+
+          <p class="text-xl md:text-2xl lg:text-3xl text-white/90 mb-12 leading-relaxed font-light max-w-4xl mx-auto animate-fade-in-up animation-delay-200">
             {sections.hero.subtitle}
           </p>
+
           {sections.hero.content?.cta_text && (
-            <div class="bg-blue-900/50 rounded-lg p-6 mt-8">
-              <h3 class="text-2xl font-semibold mb-2">{sections.hero.content.cta_text}</h3>
-              {sections.hero.content.cta_description && (
-                <p class="text-blue-100">{sections.hero.content.cta_description}</p>
-              )}
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-300">
+              <a href="/companies" class="group px-8 py-4 bg-white text-blue-600 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 inline-flex items-center">
+                {sections.hero.content.cta_text}
+                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </a>
+              <a href="/articles" class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full font-bold text-lg border-2 border-white/30 hover:bg-white/20 transition-all duration-300">
+                Read Articles
+              </a>
             </div>
           )}
+
+          <!-- Stats -->
+          <div class="grid grid-cols-3 gap-8 mt-20 max-w-3xl mx-auto animate-fade-in animation-delay-500">
+            <div class="text-center">
+              <div class="text-4xl md:text-5xl font-black text-white mb-2">2025</div>
+              <div class="text-white/70 text-sm font-medium">Latest Data</div>
+            </div>
+            <div class="text-center border-x border-white/20">
+              <div class="text-4xl md:text-5xl font-black text-white mb-2">Top</div>
+              <div class="text-white/70 text-sm font-medium">Agencies Ranked</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl md:text-5xl font-black text-white mb-2">100%</div>
+              <div class="text-white/70 text-sm font-medium">Comprehensive</div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
       </div>
     </section>
   )}
@@ -162,38 +227,53 @@ const sections = {
     </section>
   )}
 
-  <!-- Top Placement Agents Section -->
+  <!-- Top Recruitment Agencies Section -->
   {companies.length > 0 && (
-    <section class="py-16 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Leading Recruitment Agencies</h2>
-          <p class="text-xl text-gray-600">Top agencies specializing in Chief of Staff and Executive Assistant recruitment</p>
+    <section class="py-24 bg-white relative overflow-hidden">
+      <!-- Background decoration -->
+      <div class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full filter blur-3xl opacity-20 -mr-48 -mt-48"></div>
+      <div class="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100 rounded-full filter blur-3xl opacity-20 -ml-48 -mb-48"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="text-center mb-16 fade-in-scroll">
+          <span class="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold mb-4">
+            Top Ranked Agencies
+          </span>
+          <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+            Leading Recruitment <span class="text-gradient">Agencies</span>
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Top agencies specializing in Chief of Staff and Executive Assistant recruitment
+          </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {companies.map((company: any) => (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {companies.map((company: any, index: number) => (
             <a
               href={`/companies/${company.slug}`}
-              class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow p-6 block"
+              class="group relative bg-white rounded-2xl border border-gray-100 hover:border-blue-200 p-8 block hover-lift fade-in-scroll"
+              style={`animation-delay: ${index * 0.1}s`}
             >
+              <!-- Gradient accent -->
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
               {/* Company Logo */}
               {company.logo_url && (
-                <div class="mb-4 h-12 flex items-center">
+                <div class="mb-6 h-12 flex items-center">
                   <img
                     src={company.logo_url}
                     alt={`${company.name} logo`}
-                    class="h-10 w-auto"
+                    class="h-10 w-auto filter grayscale group-hover:grayscale-0 transition-all duration-300"
                   />
                 </div>
               )}
 
               {/* Company Name & Rank */}
-              <div class="flex items-start justify-between mb-3">
-                <h3 class="text-xl font-bold text-gray-900 flex-1">
+              <div class="flex items-start justify-between mb-4">
+                <h3 class="text-2xl font-black text-gray-900 flex-1 group-hover:text-blue-600 transition-colors">
                   {company.name}
                 </h3>
                 {company.global_rank && (
-                  <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                  <span class="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-sm">
                     #{company.global_rank}
                   </span>
                 )}
@@ -201,33 +281,44 @@ const sections = {
 
               {/* Location */}
               {company.headquarters && company.headquarters !== 'Unavailable from provided context' && (
-                <div class="text-sm text-gray-600 mb-3">
-                  📍 {company.headquarters}
+                <div class="flex items-center text-sm text-gray-500 mb-4">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  {company.headquarters}
                 </div>
               )}
 
               {/* Description */}
               {company.description && (
-                <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                <p class="text-gray-600 mb-6 line-clamp-3 leading-relaxed">
                   {company.description}
                 </p>
               )}
 
               {/* Specializations */}
               {company.specializations && company.specializations.length > 0 && (
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-100">
                   {company.specializations.slice(0, 3).map((spec: string) => (
-                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 group-hover:bg-blue-100 transition-colors">
                       {spec}
                     </span>
                   ))}
                   {company.specializations.length > 3 && (
-                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium text-gray-500">
-                      +{company.specializations.length - 3} more
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-gray-500">
+                      +{company.specializations.length - 3}
                     </span>
                   )}
                 </div>
               )}
+
+              <!-- Arrow icon -->
+              <div class="absolute bottom-8 right-8 w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </div>
             </a>
           ))}
         </div>
@@ -371,5 +462,29 @@ const sections = {
       </div>
     </div>
   </footer>
+
+  <!-- Scroll animations script -->
+  <script>
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with fade-in-scroll class
+    document.addEventListener('DOMContentLoaded', () => {
+      const fadeElements = document.querySelectorAll('.fade-in-scroll');
+      fadeElements.forEach(el => observer.observe(el));
+    });
+  </script>
 </body>
 </html>
