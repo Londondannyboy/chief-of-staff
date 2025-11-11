@@ -952,42 +952,44 @@ const muxPlaybackId = 'JUdKl1HO7kRD9FcNhNJLHIdgnLhLVvf3q8EmigNUYv4';
   </footer>
 
   <script define:vars={{ muxPlaybackId }}>
-    // Initialize Mux HLS video for hero
-    const heroVideo = document.getElementById('hero-video');
-    const heroVideoSrc = `https://stream.mux.com/${muxPlaybackId}.m3u8`;
+    // Wait for DOM and libraries to load
+    window.addEventListener('DOMContentLoaded', function() {
+      // Initialize Mux HLS video for hero
+      const heroVideo = document.getElementById('hero-video');
+      const heroVideoSrc = `https://stream.mux.com/${muxPlaybackId}.m3u8`;
 
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(heroVideoSrc);
-      hls.attachMedia(heroVideo);
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        heroVideo.play();
-      });
-    } else if (heroVideo.canPlayType('application/vnd.apple.mpegurl')) {
-      heroVideo.src = heroVideoSrc;
-      heroVideo.addEventListener('loadedmetadata', function() {
-        heroVideo.play();
-      });
-    }
+      if (heroVideo && typeof Hls !== 'undefined' && Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(heroVideoSrc);
+        hls.attachMedia(heroVideo);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          heroVideo.play().catch(e => console.log('Hero video autoplay prevented:', e));
+        });
+      } else if (heroVideo && heroVideo.canPlayType('application/vnd.apple.mpegurl')) {
+        heroVideo.src = heroVideoSrc;
+        heroVideo.addEventListener('loadedmetadata', function() {
+          heroVideo.play().catch(e => console.log('Hero video autoplay prevented:', e));
+        });
+      }
 
-    // Initialize Mux HLS video for companies section
-    const companiesVideo = document.getElementById('companies-video');
-    if (Hls.isSupported()) {
-      const hls2 = new Hls();
-      hls2.loadSource(heroVideoSrc);
-      hls2.attachMedia(companiesVideo);
-      hls2.on(Hls.Events.MANIFEST_PARSED, function() {
-        companiesVideo.play();
-      });
-    } else if (companiesVideo.canPlayType('application/vnd.apple.mpegurl')) {
-      companiesVideo.src = heroVideoSrc;
-      companiesVideo.addEventListener('loadedmetadata', function() {
-        companiesVideo.play();
-      });
-    }
-
-    // GSAP Animations
-    gsap.registerPlugin(ScrollTrigger);
+      // Initialize Mux HLS video for companies section
+      const companiesVideo = document.getElementById('companies-video');
+      if (companiesVideo && typeof Hls !== 'undefined' && Hls.isSupported()) {
+        const hls2 = new Hls();
+        hls2.loadSource(heroVideoSrc);
+        hls2.attachMedia(companiesVideo);
+        hls2.on(Hls.Events.MANIFEST_PARSED, function() {
+          companiesVideo.play().catch(e => console.log('Companies video autoplay prevented:', e));
+        });
+      } else if (companiesVideo && companiesVideo.canPlayType('application/vnd.apple.mpegurl')) {
+        companiesVideo.src = heroVideoSrc;
+        companiesVideo.addEventListener('loadedmetadata', function() {
+          companiesVideo.play().catch(e => console.log('Companies video autoplay prevented:', e));
+        });
+      }
+      // GSAP Animations
+      if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
     // Hero animations
     gsap.to('.hero-badge', {
@@ -1050,14 +1052,16 @@ const muxPlaybackId = 'JUdKl1HO7kRD9FcNhNJLHIdgnLhLVvf3q8EmigNUYv4';
       });
     });
 
-    // Video parallax effect
-    gsap.to('.hero-video', {
-      scale: 1.2,
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1
+        // Video parallax effect
+        gsap.to('.hero-video', {
+          scale: 1.2,
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1
+          }
+        });
       }
     });
   </script>
