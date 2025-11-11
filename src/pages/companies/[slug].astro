@@ -31,49 +31,44 @@ if (!slug) {
   return Astro.redirect('/');
 }
 
-// Fetch the company profile - SIMPLIFIED QUERY FOR DEBUGGING
-let companyResult;
-let company;
-try {
-  console.log('[Company Detail] Fetching company with slug:', slug);
+// Fetch the company profile
+const companyResult = await sql`
+  SELECT
+    id,
+    name,
+    slug,
+    type,
+    company_type,
+    description,
+    founded_year,
+    headquarters,
+    website,
+    phone,
+    website_url,
+    logo_url,
+    header_image_url,
+    global_rank,
+    regional_ranks,
+    specializations,
+    capital_raised_total,
+    funds_served,
+    overview,
+    key_facts,
+    status,
+    created_at,
+    updated_at,
+    geographic_focus,
+    notable_deals
+  FROM companies
+  WHERE slug = ${slug}
+    AND (company_type IN ('placement_agent', 'executive_assistant_recruiters') OR type = 'placement_agent')
+    AND status = 'published'
+  LIMIT 1
+`;
 
-  // SIMPLIFIED: Just check if company exists first
-  companyResult = await sql`
-    SELECT *
-    FROM companies
-    WHERE slug = ${slug}
-    LIMIT 1
-  `;
-
-  console.log('[Company Detail] Query result count:', companyResult.length);
-  company = companyResult[0];
-
-  if (company) {
-    console.log('[Company Detail] Found company:', company.name);
-    console.log('[Company Detail] Company type:', company.company_type);
-    console.log('[Company Detail] Status:', company.status);
-
-    // Check if it meets our criteria
-    const isValidType = company.company_type === 'placement_agent' ||
-                        company.company_type === 'executive_assistant_recruiters' ||
-                        company.type === 'placement_agent';
-    const isPublished = company.status === 'published';
-
-    console.log('[Company Detail] Valid type:', isValidType);
-    console.log('[Company Detail] Published:', isPublished);
-
-    if (!isValidType || !isPublished) {
-      console.log('[Company Detail] Company does not meet criteria, redirecting');
-      return Astro.redirect('/');
-    }
-  }
-} catch (error) {
-  console.error('[Company Detail] Database query error:', error);
-  return Astro.redirect('/');
-}
+const company = companyResult[0];
 
 if (!company) {
-  console.log('[Company Detail] No company found, redirecting');
   return Astro.redirect('/');
 }
 
