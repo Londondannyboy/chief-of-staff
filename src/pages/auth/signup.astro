@@ -46,23 +46,16 @@
             display: inline-block;
         }
     </style>
-    <script type="module">
-        import { StackClientApp } from "@stackframe/stack";
-
-        const stack = new StackClientApp({
-            projectId: "5ef873fa-5690-460a-bc2c-b29802508691",
-            publishableClientKey: "pck_ga54pv0h057get6j0ej1sxeacgd0kszgs800xnydnd0v0"
-        });
-
-        window.signUp = async () => {
-            await stack.redirectToSignUp();
+    <script src="https://cdn.jsdelivr.net/npm/@stackframe/stack@latest/dist/index.global.js"></script>
+    <script>
+        window.signUp = () => {
+            console.log('Sign up clicked');
+            const projectId = "5ef873fa-5690-460a-bc2c-b29802508691";
+            const returnUrl = encodeURIComponent(window.location.origin + "/auth/callback");
+            const signUpUrl = `https://app.stack-auth.com/handler/sign-up?project_id=${projectId}&after_auth_return_to=${returnUrl}`;
+            console.log('Redirecting to:', signUpUrl);
+            window.location.href = signUpUrl;
         };
-
-        // Check if already signed in
-        const user = stack.getUser();
-        if (user) {
-            window.location.href = '/profile';
-        }
     </script>
 </head>
 <body>

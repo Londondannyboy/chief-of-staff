@@ -29,25 +29,30 @@
         <p>Please wait while we sign you in.</p>
     </div>
 
-    <script type="module">
-        import { StackClientApp } from "@stackframe/stack";
-
-        const stack = new StackClientApp({
-            projectId: "5ef873fa-5690-460a-bc2c-b29802508691",
-            publishableClientKey: "pck_ga54pv0h057get6j0ej1sxeacgd0kszgs800xnydnd0v0"
-        });
-
-        // Handle the callback
+    <script>
+        // Handle the callback from Stack Auth
         async function handleCallback() {
             try {
-                // Stack Auth will handle the callback automatically
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                const urlParams = new URLSearchParams(window.location.search);
+                const authToken = urlParams.get('access_token') || urlParams.get('token');
+                const code = urlParams.get('code');
 
-                // Check if user is now authenticated
-                const user = stack.getUser();
-                if (user) {
+                console.log('Callback received, auth token:', authToken, 'code:', code);
+
+                if (authToken) {
+                    // Store the auth token
+                    localStorage.setItem('stack-auth-token', authToken);
+                    document.cookie = `stack-auth-token=${authToken}; path=/; max-age=2592000; SameSite=Lax`;
+
+                    // Redirect to profile
+                    window.location.href = '/profile';
+                } else if (code) {
+                    // Exchange code for token
+                    console.log('Need to exchange code for token');
+                    // For now, redirect to profile and let it handle auth
                     window.location.href = '/profile';
                 } else {
+                    console.error('No auth token or code in callback');
                     window.location.href = '/auth/signin';
                 }
             } catch (error) {
