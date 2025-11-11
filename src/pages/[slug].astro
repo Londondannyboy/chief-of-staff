@@ -5,10 +5,8 @@ import { insertImagesIntoHTML } from '../lib/insertImages';
 
 const { slug } = Astro.params;
 
-// Skip special routes that have their own handlers
-const specialRoutes = ['sitemap.xml', 'llm.txt', 'robots.txt'];
-if (!slug || specialRoutes.includes(slug)) {
-  return new Response(null, { status: 404 });
+if (!slug) {
+  return Astro.redirect('/');
 }
 
 // Configure marked for better formatting
