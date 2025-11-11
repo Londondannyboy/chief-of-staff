@@ -1,7 +1,7 @@
 ---
 import { sql } from '../../lib/db';
 
-// Fetch all placement agent companies
+// Fetch all Chief of Staff recruitment agency companies
 const companies = await sql`
   SELECT
     id,
@@ -15,7 +15,8 @@ const companies = await sql`
     global_rank,
     created_at
   FROM companies
-  WHERE status = 'published'
+  WHERE app = 'chief-of-staff'
+    AND status = 'published'
   ORDER BY
     CASE WHEN global_rank IS NOT NULL THEN 0 ELSE 1 END,
     global_rank ASC NULLS LAST,
