@@ -1,13 +1,14 @@
 ---
 import { sql } from '../../lib/db';
 
-// Fetch all Chief of Staff recruitment agency companies
+// Fetch all executive assistant recruiter companies
 const companies = await sql`
   SELECT
     id,
     name,
     slug,
     type,
+    company_type,
     description,
     headquarters,
     logo_url,
@@ -15,8 +16,8 @@ const companies = await sql`
     global_rank,
     created_at
   FROM companies
-  WHERE app = 'chief-of-staff'
-    AND status = 'published'
+  WHERE status = 'published'
+    AND company_type = 'executive_assistant_recruiters'
   ORDER BY
     CASE WHEN global_rank IS NOT NULL THEN 0 ELSE 1 END,
     global_rank ASC NULLS LAST,
@@ -29,8 +30,8 @@ const companies = await sql`
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recruitment Agencies Directory | Chief of Staff</title>
-  <meta name="description" content="Comprehensive directory of leading recruitment agencies and financial advisory firms">
+  <title>Executive Assistant & Chief of Staff Recruitment Agencies | Chief of Staff</title>
+  <meta name="description" content="Comprehensive directory of leading Executive Assistant recruitment agencies and Chief of Staff recruitment agencies">
 </head>
 <body class="bg-gray-50">
   <!-- Navigation -->
@@ -54,9 +55,9 @@ const companies = await sql`
   <!-- Page Header -->
   <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">Recruitment Agencies Directory</h1>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Executive Assistant & Chief of Staff Recruitment Agencies</h1>
       <p class="text-xl text-blue-100 max-w-3xl">
-        Comprehensive profiles of leading recruitment agencies and financial advisory firms in private equity, venture capital, and alternative investments.
+        Comprehensive profiles of leading <strong>Executive Assistant recruitment agencies</strong> and <strong>Chief of Staff recruitment agencies</strong> specializing in executive-level placements.
       </p>
     </div>
   </div>

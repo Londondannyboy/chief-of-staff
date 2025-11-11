@@ -11,7 +11,7 @@ const homepageContent = await sql`
   ORDER BY section_order ASC
 `;
 
-// Fetch companies - filter by status only, NOT by app column
+// Fetch companies - filter for executive assistant recruiters only
 const companies = await sql`
   SELECT
     name,
@@ -23,6 +23,7 @@ const companies = await sql`
     global_rank
   FROM companies
   WHERE status = 'published'
+    AND company_type = 'executive_assistant_recruiters'
   ORDER BY
     CASE WHEN global_rank IS NOT NULL THEN 0 ELSE 1 END,
     global_rank ASC NULLS LAST,
