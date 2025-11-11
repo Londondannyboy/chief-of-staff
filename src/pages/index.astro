@@ -1,0 +1,374 @@
+---
+import { sql } from '../lib/db';
+
+// Fetch homepage content
+const homepageContent = await sql`
+  SELECT
+    section_type,
+    title,
+    subtitle,
+    content
+  FROM homepage_content
+  WHERE site = 'chief-of-staff'
+    AND is_active = true
+  ORDER BY section_order ASC
+`;
+
+// Fetch companies for the directory
+const companies = await sql`
+  SELECT
+    id,
+    name,
+    slug,
+    description,
+    headquarters,
+    logo_url,
+    specializations,
+    global_rank
+  FROM companies
+  WHERE app = 'chief-of-staff'
+    AND status = 'published'
+  ORDER BY
+    CASE WHEN global_rank IS NOT NULL THEN 0 ELSE 1 END,
+    global_rank ASC NULLS LAST,
+    name ASC
+  LIMIT 10
+`;
+
+// Fetch articles with images - supporting both JSONB column and legacy tables
+const articles = await sql`
+  SELECT
+    a.id,
+    a.title,
+    a.excerpt,
+    a.slug,
+    a.published_at,
+    a.created_at,
+    a.article_angle,
+    a.images,
+    (
+      SELECT json_build_object('url', i.cloudinary_url, 'alt', aiu.alt_text)
+      FROM article_image_usage aiu
+      JOIN images i ON i.id = aiu.image_id
+      WHERE aiu.article_id = a.id AND aiu.role = 'featured'
+      LIMIT 1
+    ) as featured_image_legacy
+  FROM articles a
+  WHERE a.app = 'chief-of-staff'
+    AND a.status = 'published'
+  ORDER BY a.published_at DESC NULLS LAST, a.created_at DESC
+  LIMIT 6
+`;
+
+const sections = {
+  hero: homepageContent.find((s: any) => s.section_type === 'hero'),
+  intro: homepageContent.find((s: any) => s.section_type === 'intro'),
+  role: homepageContent.find((s: any) => s.section_type === 'role'),
+  topAgents: homepageContent.find((s: any) => s.section_type === 'top_agents'),
+  howItWorks: homepageContent.find((s: any) => s.section_type === 'how_it_works'),
+  feeStructures: homepageContent.find((s: any) => s.section_type === 'fee_structures'),
+  selection: homepageContent.find((s: any) => s.section_type === 'selection'),
+  whyUse: homepageContent.find((s: any) => s.section_type === 'why_use'),
+  trends: homepageContent.find((s: any) => s.section_type === 'trends'),
+  faq: homepageContent.find((s: any) => s.section_type === 'faq')
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chief of Staff Jobs & Executive Assistant Recruitment Agencies</title>
+</head>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <h1 class="text-2xl font-bold text-blue-600">Chief of Staff</h1>
+        </div>
+        <div class="flex items-center space-x-8">
+          <a href="/" class="text-blue-600 font-medium">Home</a>
+          <a href="/articles" class="text-gray-700 hover:text-blue-600 font-medium">Articles</a>
+          <a href="/companies" class="text-gray-700 hover:text-blue-600 font-medium">Companies</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  {sections.hero && (
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            {sections.hero.title}
+          </h2>
+          <p class="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+            {sections.hero.subtitle}
+          </p>
+          {sections.hero.content?.cta_text && (
+            <div class="bg-blue-900/50 rounded-lg p-6 mt-8">
+              <h3 class="text-2xl font-semibold mb-2">{sections.hero.content.cta_text}</h3>
+              {sections.hero.content.cta_description && (
+                <p class="text-blue-100">{sections.hero.content.cta_description}</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Intro Section -->
+  {sections.intro && (
+    <section class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">{sections.intro.title}</h2>
+        <div class="prose prose-lg max-w-none space-y-4">
+          {sections.intro.content?.paragraphs?.map((para: any) => (
+            <p class="text-gray-700 leading-relaxed">{para.text}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Role Section -->
+  {sections.role && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{sections.role.title}</h2>
+          {sections.role.subtitle && <p class="text-xl text-gray-600">{sections.role.subtitle}</p>}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sections.role.content?.items?.map((item: any) => (
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+              <h3 class="text-lg font-bold text-gray-900 mb-3">{item.title}</h3>
+              <p class="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+            </div>
+          ))}
+        </div>
+        {sections.role.content?.summary && (
+          <div class="mt-8 bg-blue-50 p-6 rounded-lg">
+            <p class="text-gray-700 leading-relaxed">{sections.role.content.summary}</p>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- Top Placement Agents Section -->
+  {companies.length > 0 && (
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Leading Recruitment Agencies</h2>
+          <p class="text-xl text-gray-600">Top agencies specializing in Chief of Staff and Executive Assistant recruitment</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {companies.map((company: any) => (
+            <a
+              href={`/companies/${company.slug}`}
+              class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow p-6 block"
+            >
+              {/* Company Logo */}
+              {company.logo_url && (
+                <div class="mb-4 h-12 flex items-center">
+                  <img
+                    src={company.logo_url}
+                    alt={`${company.name} logo`}
+                    class="h-10 w-auto"
+                  />
+                </div>
+              )}
+
+              {/* Company Name & Rank */}
+              <div class="flex items-start justify-between mb-3">
+                <h3 class="text-xl font-bold text-gray-900 flex-1">
+                  {company.name}
+                </h3>
+                {company.global_rank && (
+                  <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                    #{company.global_rank}
+                  </span>
+                )}
+              </div>
+
+              {/* Location */}
+              {company.headquarters && company.headquarters !== 'Unavailable from provided context' && (
+                <div class="text-sm text-gray-600 mb-3">
+                  📍 {company.headquarters}
+                </div>
+              )}
+
+              {/* Description */}
+              {company.description && (
+                <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                  {company.description}
+                </p>
+              )}
+
+              {/* Specializations */}
+              {company.specializations && company.specializations.length > 0 && (
+                <div class="flex flex-wrap gap-2">
+                  {company.specializations.slice(0, 3).map((spec: string) => (
+                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                      {spec}
+                    </span>
+                  ))}
+                  {company.specializations.length > 3 && (
+                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium text-gray-500">
+                      +{company.specializations.length - 3} more
+                    </span>
+                  )}
+                </div>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- How It Works Section -->
+  {sections.howItWorks && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{sections.howItWorks.title}</h2>
+          {sections.howItWorks.subtitle && <p class="text-xl text-gray-600">{sections.howItWorks.subtitle}</p>}
+        </div>
+        <div class="space-y-6">
+          {sections.howItWorks.content?.phases?.map((phase: any, index: number) => (
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-600">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                  {index + 1}
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-lg font-bold text-gray-900">{phase.name}</h3>
+                    <span class="text-sm text-gray-500">{phase.duration}</span>
+                  </div>
+                  <p class="text-gray-700 leading-relaxed">{phase.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        {sections.howItWorks.content?.summary && (
+          <div class="mt-8 bg-blue-50 p-6 rounded-lg">
+            <p class="text-gray-700 font-semibold">{sections.howItWorks.content.summary}</p>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ Section -->
+  {sections.faq && (
+    <section class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{sections.faq.title}</h2>
+          {sections.faq.subtitle && <p class="text-xl text-gray-600">{sections.faq.subtitle}</p>}
+        </div>
+        <div class="space-y-6">
+          {sections.faq.content?.questions?.map((item: any) => (
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h3 class="text-lg font-bold text-gray-900 mb-3">{item.question}</h3>
+              <p class="text-gray-700 leading-relaxed">{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Latest Articles -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Latest Articles</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {articles.map((article: any) => (
+          <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            {(article.images?.featured || article.featured_image_legacy?.url) && (
+              <img src={article.images?.featured || article.featured_image_legacy.url} alt={article.featured_image_legacy?.alt || article.title} class="w-full h-48 object-cover" />
+            )}
+            <div class="p-6">
+              {article.article_angle && (
+                <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded mb-3">
+                  {article.article_angle}
+                </span>
+              )}
+              <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                <a href={`/${article.slug}`} class="hover:text-blue-600">
+                  {article.title}
+                </a>
+              </h3>
+              {article.excerpt && (
+                <p class="text-gray-600 mb-4 line-clamp-3">
+                  {article.excerpt}
+                </p>
+              )}
+              <div class="flex items-center justify-between text-sm text-gray-500">
+                <time datetime={article.published_at || article.created_at}>
+                  {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+                <a href={`/${article.slug}`} class="text-blue-600 hover:text-blue-800 font-medium">
+                  Read more →
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {articles.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-gray-600 text-lg">No articles published yet. Check back soon!</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <h3 class="text-lg font-bold mb-4">Chief of Staff</h3>
+          <p class="text-gray-400 text-sm">Your source for Chief of Staff and Executive Assistant recruitment insights and industry news.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mb-4">Navigate</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/" class="text-gray-400 hover:text-white">Home</a></li>
+            <li><a href="/articles" class="text-gray-400 hover:text-white">Articles</a></li>
+            <li><a href="/companies" class="text-gray-400 hover:text-white">Companies Directory</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mb-4">Resources</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/companies" class="text-gray-400 hover:text-white">Top Recruitment Agencies</a></li>
+            <li><a href="/articles" class="text-gray-400 hover:text-white">Industry News</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 text-center">
+        <p class="text-gray-400 text-sm">© {new Date().getFullYear()} Chief of Staff. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
