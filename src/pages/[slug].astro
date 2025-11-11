@@ -9,6 +9,11 @@ if (!slug) {
   return Astro.redirect('/');
 }
 
+// Skip routes with file extensions (let endpoint routes handle them)
+if (slug.includes('.')) {
+  return new Response(null, { status: 404 });
+}
+
 // Configure marked for better formatting
 marked.setOptions({
   breaks: false,  // Don't convert single \n to <br> (proper paragraph spacing)
