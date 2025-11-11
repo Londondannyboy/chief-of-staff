@@ -3,14 +3,28 @@ import { sql } from '../../lib/db';
 
 const { slug } = Astro.params;
 
+// Determine site context based on domain/path
+const isPlacementSite = Astro.url.hostname.includes('placement');
+const isChiefOfStaffSite = Astro.url.hostname.includes('chiefofstaff') || Astro.url.pathname.includes('chiefofstaff');
+
 // SEO anchor text variations
-const anchorTexts = [
+const placementAnchorTexts = [
   "View all leading placement agents",
   "Top private equity placement agents",
   "Best placement agents directory",
   "Complete list of placement agents",
   "Leading fund placement firms"
 ];
+
+const recruiterAnchorTexts = [
+  "View all leading recruitment agencies",
+  "Top executive assistant recruiters",
+  "Best recruitment agencies directory",
+  "Complete list of chief of staff recruiters",
+  "Leading executive recruitment firms"
+];
+
+const anchorTexts = isPlacementSite ? placementAnchorTexts : recruiterAnchorTexts;
 const anchorText = anchorTexts[Math.floor(Math.random() * anchorTexts.length)];
 
 if (!slug) {
@@ -28,6 +42,8 @@ const companyResult = await sql`
     description,
     founded_year,
     headquarters,
+    website,
+    phone,
     website_url,
     logo_url,
     header_image_url,
@@ -45,7 +61,8 @@ const companyResult = await sql`
     notable_deals
   FROM companies
   WHERE slug = ${slug}
-    AND (company_type = 'placement_agent' OR type = 'placement_agent')
+    AND (company_type IN ('placement_agent', 'executive_assistant_recruiters') OR type = 'placement_agent')
+    AND status = 'published'
   LIMIT 1
 `;
 
@@ -54,6 +71,11 @@ const company = companyResult[0];
 if (!company) {
   return Astro.redirect('/');
 }
+
+// Determine company category for template labels
+const isRecruiter = company.company_type === 'executive_assistant_recruiters';
+const companyTypeLabel = isRecruiter ? 'Executive Recruiter' : 'Placement Agent';
+const siteTitle = isRecruiter ? 'Chief of Staff' : 'Placement';
 
 // Parse key_facts if it's JSONB
 const keyFacts = typeof company.key_facts === 'string'
@@ -70,8 +92,8 @@ const people = keyFacts?.people || [];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{company.name} - Placement Agent Profile | Placement</title>
-  <meta name="description" content={company.description || `${company.name} - Leading placement agent profile`}>
+  <title>{company.name} - {companyTypeLabel} Profile | {siteTitle}</title>
+  <meta name="description" content={company.description || `${company.name} - Leading ${companyTypeLabel.toLowerCase()} profile`}>
 </head>
 <body class="bg-gray-50">
   <!-- Navigation -->
@@ -80,7 +102,7 @@ const people = keyFacts?.people || [];
       <div class="flex justify-between h-16">
         <div class="flex items-center">
           <h1 class="text-2xl font-bold text-blue-600">
-            <a href="/">Placement</a>
+            <a href="/">{siteTitle}</a>
           </h1>
         </div>
         <div class="flex items-center space-x-8">
@@ -114,7 +136,7 @@ const people = keyFacts?.people || [];
             <!-- Company Name & Type -->
             <div class="mb-4">
               <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded mb-3">
-                Placement Agent
+                {companyTypeLabel}
               </span>
               <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3 leading-tight">
                 {company.name}
@@ -140,11 +162,19 @@ const people = keyFacts?.people || [];
                   <span>{company.headquarters}</span>
                 </div>
               )}
-              {company.website_url && company.website_url !== 'Unavailable from provided context' && (
+              {(company.website_url || company.website) && (company.website_url !== 'Unavailable from provided context') && (
                 <div class="flex items-center">
                   <span class="font-semibold mr-2">Website:</span>
-                  <a href={company.website_url} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
-                    {company.website_url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                  <a href={company.website_url || company.website} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
+                    {(company.website_url || company.website).replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                  </a>
+                </div>
+              )}
+              {company.phone && (
+                <div class="flex items-center">
+                  <span class="font-semibold mr-2">Phone:</span>
+                  <a href={`tel:${company.phone}`} class="text-blue-600 hover:underline">
+                    {company.phone}
                   </a>
                 </div>
               )}
@@ -329,8 +359,12 @@ const people = keyFacts?.people || [];
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         <div>
-          <h3 class="text-lg font-bold mb-4">Placement</h3>
-          <p class="text-gray-400 text-sm">Your source for private equity placement agent insights and industry news.</p>
+          <h3 class="text-lg font-bold mb-4">{siteTitle}</h3>
+          <p class="text-gray-400 text-sm">
+            {isRecruiter
+              ? 'Your source for Chief of Staff and Executive Assistant recruitment insights and industry news.'
+              : 'Your source for private equity placement agent insights and industry news.'}
+          </p>
         </div>
         <div>
           <h3 class="text-lg font-bold mb-4">Navigate</h3>
@@ -343,13 +377,15 @@ const people = keyFacts?.people || [];
         <div>
           <h3 class="text-lg font-bold mb-4">Resources</h3>
           <ul class="space-y-2 text-sm">
-            <li><a href="/companies" class="text-gray-400 hover:text-white">Top Placement Agents</a></li>
+            <li><a href="/companies" class="text-gray-400 hover:text-white">
+              {isRecruiter ? 'Top Executive Recruiters' : 'Top Placement Agents'}
+            </a></li>
             <li><a href="/articles" class="text-gray-400 hover:text-white">Industry News</a></li>
           </ul>
         </div>
       </div>
       <div class="border-t border-gray-800 pt-8 text-center">
-        <p class="text-gray-400 text-sm">© {new Date().getFullYear()} Placement. All rights reserved.</p>
+        <p class="text-gray-400 text-sm">© {new Date().getFullYear()} {siteTitle}. All rights reserved.</p>
       </div>
     </div>
   </footer>
