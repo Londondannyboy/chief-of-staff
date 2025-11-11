@@ -32,43 +32,63 @@ if (!slug) {
 }
 
 // Fetch the company profile
-const companyResult = await sql`
-  SELECT
-    id,
-    name,
-    slug,
-    type,
-    company_type,
-    description,
-    founded_year,
-    headquarters,
-    website,
-    phone,
-    website_url,
-    logo_url,
-    header_image_url,
-    global_rank,
-    regional_ranks,
-    specializations,
-    capital_raised_total,
-    funds_served,
-    overview,
-    key_facts,
-    status,
-    created_at,
-    updated_at,
-    geographic_focus,
-    notable_deals
-  FROM companies
-  WHERE slug = ${slug}
-    AND (company_type IN ('placement_agent', 'executive_assistant_recruiters') OR type = 'placement_agent')
-    AND status = 'published'
-  LIMIT 1
-`;
+let companyResult;
+let company;
+try {
+  console.log('[Company Detail] Fetching company with slug:', slug);
+  companyResult = await sql`
+    SELECT
+      id,
+      name,
+      slug,
+      type,
+      company_type,
+      description,
+      founded_year,
+      headquarters,
+      website,
+      phone,
+      website_url,
+      logo_url,
+      header_image_url,
+      global_rank,
+      regional_ranks,
+      specializations,
+      capital_raised_total,
+      funds_served,
+      overview,
+      key_facts,
+      status,
+      created_at,
+      updated_at,
+      geographic_focus,
+      notable_deals
+    FROM companies
+    WHERE slug = ${slug}
+      AND (company_type IN ('placement_agent', 'executive_assistant_recruiters') OR type = 'placement_agent')
+      AND status = 'published'
+    LIMIT 1
+  `;
 
-const company = companyResult[0];
+  console.log('[Company Detail] Query result:', companyResult);
+  company = companyResult[0];
+  console.log('[Company Detail] Company found:', !!company);
+
+  if (company) {
+    console.log('[Company Detail] Company data:', {
+      name: company.name,
+      company_type: company.company_type,
+      type: company.type,
+      status: company.status
+    });
+  }
+} catch (error) {
+  console.error('[Company Detail] Database query error:', error);
+  return Astro.redirect('/');
+}
 
 if (!company) {
+  console.log('[Company Detail] No company found, redirecting');
   return Astro.redirect('/');
 }
 
