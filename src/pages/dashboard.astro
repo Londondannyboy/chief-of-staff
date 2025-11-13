@@ -49,18 +49,26 @@ const siteConfig = {
       box-sizing: border-box;
     }
 
-    html, body {
+    html, body, #root {
       width: 100%;
       height: 100%;
       overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
     }
   </style>
 </head>
 <body>
-  <C1Dashboard
-    client:only="react"
-    agentName="Chief of Staff Assistant"
-    logoUrl={siteConfig.logoUrl}
-  />
+  <div id="root">
+    <C1Dashboard
+      client:only="react"
+      agentName="Chief of Staff Assistant"
+      logoUrl={siteConfig.logoUrl}
+    />
+  </div>
 </body>
 </html>
