@@ -33,7 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
       body: JSON.stringify({
         messages,
         stream: true,
-        model: 'c1/anthropic/claude-sonnet-4/latest',
+        model: 'c1/anthropic/claude-sonnet-4/v-20250930',
       }),
     });
 
