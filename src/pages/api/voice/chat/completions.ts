@@ -41,31 +41,91 @@ export const POST: APIRoute = async ({ request }) => {
       // Continue even if Zep fails - don't block the conversation
     }
 
-    // Get relevant context from Zep
+    // Search Zep for relevant context
     let zepContext = '';
+    let hasContext = false;
+
+    const userMessage = messages[messages.length - 1];
+
     try {
-      const memory = await zep.memory.get(sessionId);
-      if (memory?.context) {
-        zepContext = `\n\n[Relevant Context from Knowledge Graph]:\n${memory.context}`;
-        console.log('[Voice LLM] Retrieved Zep context');
+      // Search Zep for relevant facts about the query
+      const searchResults = await zep.memory.search(sessionId, {
+        text: userMessage.content,
+        searchScope: 'summary', // Search summaries and facts
+        searchType: 'similarity',
+      });
+
+      if (searchResults && searchResults.length > 0) {
+        zepContext = searchResults
+          .map((result: any) => result.message?.content || result.summary)
+          .filter(Boolean)
+          .join('\n\n');
+
+        hasContext = zepContext.trim().length > 0;
+        console.log('[Voice LLM] Found Zep context:', hasContext);
       }
-    } catch (contextError: any) {
-      console.error('[Voice LLM] Context retrieval error:', contextError.message);
+    } catch (searchError: any) {
+      console.error('[Voice LLM] Zep search error:', searchError.message);
     }
 
-    // Get the user's last message
-    const userMessage = messages[messages.length - 1];
+    // If no context found in Zep, return polite refusal
+    if (!hasContext) {
+      console.log('[Voice LLM] No context - returning refusal');
+      const assistantMessage = "I don't have information about that in my knowledge base yet. Could you tell me more about it? I'll remember it for next time.";
+
+      // Store this exchange in Zep
+      try {
+        await zep.memory.add(sessionId, {
+          messages: [{
+            role: 'assistant',
+            content: assistantMessage,
+            roleType: 'assistant',
+          }],
+        });
+      } catch (e) {
+        console.error('[Voice LLM] Failed to store refusal:', e);
+      }
+
+      return new Response(
+        JSON.stringify({
+          id: `chatcmpl-${Date.now()}`,
+          object: 'chat.completion',
+          created: Math.floor(Date.now() / 1000),
+          model: 'zep-knowledge-base',
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: assistantMessage,
+              },
+              finish_reason: 'stop',
+            },
+          ],
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     const conversationHistory = messages.slice(0, -1);
 
-    // Build enhanced prompt with Zep context
-    const systemPrompt = `You are a highly capable Chief of Staff Assistant with emotional intelligence. You help with:
-- Strategic planning and decision-making
-- Meeting coordination and follow-ups
-- Information synthesis and insights
-- Task prioritization and management
-- Research and analysis
+    // Build strict RAG prompt - ONLY use Zep context
+    const systemPrompt = `You are a knowledge-based Chief of Staff Assistant.
 
-You speak naturally and conversationally. Be concise but helpful. Show empathy and understanding.${zepContext}`;
+CRITICAL RULES:
+1. You can ONLY answer based on the information provided in the Context below
+2. If the Context doesn't contain information to answer the question, you MUST say: "I don't have information about that in my knowledge base yet. Could you tell me more?"
+3. DO NOT use your general knowledge or training data
+4. DO NOT make assumptions beyond what's in the Context
+5. Speak naturally and conversationally, but ONLY from the Context
+
+CONTEXT FROM KNOWLEDGE BASE:
+${zepContext}
+
+Answer the user's question using ONLY the information above. Be helpful and concise.`;
 
     // Call Anthropic Claude for response
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -77,10 +137,10 @@ You speak naturally and conversationally. Be concise but helpful. Show empathy a
       },
       body: JSON.stringify({
         model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 1024,
+        max_tokens: 512,
         system: systemPrompt,
         messages: [
-          ...conversationHistory.map((msg: any) => ({
+          ...conversationHistory.slice(-6).map((msg: any) => ({
             role: msg.role === 'assistant' ? 'assistant' : 'user',
             content: msg.content,
           })),
@@ -102,7 +162,7 @@ You speak naturally and conversationally. Be concise but helpful. Show empathy a
     const data = await response.json();
     const assistantMessage = data.content[0].text;
 
-    console.log('[Voice LLM] Generated response');
+    console.log('[Voice LLM] Generated response from Zep context');
 
     // Return in OpenAI-compatible format for Hume
     return new Response(
