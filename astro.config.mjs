@@ -14,5 +14,16 @@ export default defineConfig({
   integrations: [tailwind(), react()],
   server: {
     host: true // Listen on all network interfaces (0.0.0.0)
+  },
+  vite: {
+    resolve: {
+      alias: {
+        'lodash/escape': 'lodash/escape.js',
+        'lodash/unescape': 'lodash/unescape.js',
+      }
+    },
+    ssr: {
+      noExternal: ['@thesysai/genui-sdk', '@crayonai/react-core', '@crayonai/react-ui']
+    }
   }
 });
