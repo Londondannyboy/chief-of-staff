@@ -23,6 +23,9 @@ importers:
       '@crayonai/react-ui':
         specifier: ^0.9.0
         version: 0.9.0(@crayonai/react-core@0.7.6(@crayonai/stream@0.6.4(zod-to-json-schema@3.24.6(zod@3.25.76))(zod@3.25.76))(eventsource-parser@3.0.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwind-merge@2.6.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.18(tsx@4.20.6)(yaml@2.8.1)))(tiny-invariant@1.3.3)(zustand@4.5.7(@types/react@19.2.4)(immer@10.2.0)(react@18.3.1)))(@crayonai/stream@0.6.4(zod-to-json-schema@3.24.6(zod@3.25.76))(zod@3.25.76))(@types/react-dom@19.2.3(@types/react@19.2.4))(@types/react@19.2.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zustand@4.5.7(@types/react@19.2.4)(immer@10.2.0)(react@18.3.1))
+      '@humeai/voice-react':
+        specifier: ^0.2.8
+        version: 0.2.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@neondatabase/serverless':
         specifier: ^1.0.2
         version: 1.0.2
@@ -41,6 +44,9 @@ importers:
       astro:
         specifier: ^5.15.4
         version: 5.15.5(@types/node@24.10.0)(@vercel/functions@2.2.13(@aws-sdk/credential-provider-web-identity@3.928.0))(jiti@1.21.7)(rollup@4.53.2)(tsx@4.20.6)(typescript@5.9.3)(yaml@2.8.1)
+      hume:
+        specifier: ^0.15.4
+        version: 0.15.4
       lucide-react:
         specifier: ^0.469.0
         version: 0.469.0(react@18.3.1)
@@ -512,6 +518,12 @@ packages:
     resolution: {integrity: sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag==}
     peerDependencies:
       react-hook-form: ^7.0.0
+
+  '@humeai/voice-react@0.2.8':
+    resolution: {integrity: sha512-U4qjqjBOp4l5TOu90TxmPhbb2imPt4UTbITIVbFM6Od8BSueJAgr9pVv/CjaDKT22dXmYhWbNAl8zgEKX3gjyg==}
+    peerDependencies:
+      react: '>=18.2.0'
+      react-dom: '>=18.2.0'
 
   '@img/colour@1.0.0':
     resolution: {integrity: sha512-A5P/LfWGFSl6nsckYtjw9da+19jB8hkJ6ACTGcDfEJ0aE+l2n2El7dsVM7UVHZQ9s2lmYMWlrS21YLy2IR1LUw==}
@@ -2666,6 +2678,10 @@ packages:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
 
+  hume@0.15.4:
+    resolution: {integrity: sha512-YSAAhCTpx8XaCPKCxpfmqydbqIRAxLc3c68Hht5nv+MmyMMmL6BffYVKO5nMff5BL1jWUKfOrg3MHOM9cqM5Mw==}
+    engines: {node: '>=18.0.0'}
+
   immer@10.2.0:
     resolution: {integrity: sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw==}
 
@@ -4050,6 +4066,18 @@ packages:
     resolution: {integrity: sha512-42AtmgqjV+X1VpdOfyTGOYRi0/zsoLqtXQckTmqTeybT+BDIbM/Guxo7x3pE2vtpr1ok6xRqM9OpBe+Jyoqyww==}
     engines: {node: '>=18'}
 
+  ws@8.18.3:
+    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
@@ -4855,6 +4883,18 @@ snapshots:
   '@hookform/resolvers@3.10.0(react-hook-form@7.66.0(react@18.3.1))':
     dependencies:
       react-hook-form: 7.66.0(react@18.3.1)
+
+  '@humeai/voice-react@0.2.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      date-fns: 3.6.0
+      hume: 0.15.4
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      type-fest: 4.41.0
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@img/colour@1.0.0':
     optional: true
@@ -7278,6 +7318,15 @@ snapshots:
       statuses: 2.0.1
       toidentifier: 1.0.1
 
+  hume@0.15.4:
+    dependencies:
+      uuid: 9.0.1
+      ws: 8.18.3
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   immer@10.2.0: {}
 
   import-meta-resolve@4.2.0: {}
@@ -8921,6 +8970,8 @@ snapshots:
       ansi-styles: 6.2.3
       string-width: 7.2.0
       strip-ansi: 7.1.2
+
+  ws@8.18.3: {}
 
   xtend@4.0.2: {}
 

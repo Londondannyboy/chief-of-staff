@@ -1,5 +1,5 @@
 ---
-import C1Dashboard from '../components/C1Dashboard';
+import HumeVoice from '../components/HumeVoice';
 
 // Check authentication
 const authToken = Astro.cookies.get('stack-auth-token')?.value;
@@ -28,11 +28,6 @@ try {
   console.error('Auth error:', error);
   return Astro.redirect('/auth/signin');
 }
-
-const siteConfig = {
-  name: 'Chief of Staff Quest',
-  logoUrl: '/logo.png', // Update with your actual logo path
-};
 ---
 
 <!DOCTYPE html>
@@ -40,7 +35,7 @@ const siteConfig = {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - {siteConfig.name}</title>
+  <title>Voice Assistant - Chief of Staff Quest</title>
   <style>
     * {
       margin: 0;
@@ -52,51 +47,10 @@ const siteConfig = {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hello {
-      text-align: center;
-      animation: fadeIn 1s ease-in;
-    }
-
-    .hello h1 {
-      font-size: 120px;
-      font-weight: 900;
-      margin-bottom: 20px;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .hello p {
-      font-size: 32px;
-      font-weight: 300;
-      opacity: 0.9;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
   </style>
 </head>
 <body>
-  <div class="hello">
-    <h1>👋 HELLO!</h1>
-    <p>Dashboard is live and working!</p>
-  </div>
+  <HumeVoice client:only="react" />
 </body>
 </html>
