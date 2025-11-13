@@ -24,27 +24,39 @@ export default function C1Dashboard({
     responseId: string;
     abortController: AbortController;
   }) => {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messages: messages.map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-        threadId,
-        responseId,
-      }),
-      signal: abortController.signal,
-    });
+    console.log('processMessage called', { threadId, messagesCount: messages.length });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`);
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: messages.map(m => ({
+            role: m.role,
+            content: m.content,
+          })),
+          threadId,
+          responseId,
+        }),
+        signal: abortController.signal,
+      });
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API error:', response.status, errorText);
+        throw new Error(`API error: ${response.status} - ${errorText}`);
+      }
+
+      return response;
+    } catch (error) {
+      console.error('processMessage error:', error);
+      throw error;
     }
-
-    return response;
   };
 
   return (
