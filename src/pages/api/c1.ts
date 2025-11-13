@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { makeC1Response } from '@thesysai/genui-sdk/server';
 
 const THESYS_API_KEY = import.meta.env.THESYS_API_KEY || import.meta.env.PUBLIC_THESYS_API_KEY;
-const THESYS_API_URL = 'https://api.thesys.dev/v1/chat/completions';
+const THESYS_API_URL = 'https://api.thesys.dev/v1/embed/chat/completions';
 
 export const POST: APIRoute = async ({ request }) => {
   console.log('C1 API endpoint called');
@@ -33,7 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
       body: JSON.stringify({
         messages,
         stream: true,
-        model: 'thesys-c1',
+        model: 'c1/anthropic/claude-sonnet-4/latest',
       }),
     });
 
