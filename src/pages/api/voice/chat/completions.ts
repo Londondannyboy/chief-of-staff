@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { ZepClient } from '@getzep/zep-cloud';
 
 const ZEP_API_KEY = import.meta.env.ZEP_API_KEY;
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || import.meta.env.ANTHROPIC_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
 
 export const POST: APIRoute = async ({ request }) => {
   console.log('[Voice LLM] Request received');
@@ -127,42 +127,51 @@ ${zepContext}
 
 Answer the user's question using ONLY the information above. Be helpful and concise.`;
 
-    // Call Anthropic Claude for response
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY || '',
-        'anthropic-version': '2023-06-01',
+    // Build conversation for Gemini
+    const geminiMessages = [
+      ...conversationHistory.slice(-6).map((msg: any) => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }],
+      })),
+      {
+        role: 'user',
+        parts: [{ text: userMessage.content }],
       },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 512,
-        system: systemPrompt,
-        messages: [
-          ...conversationHistory.slice(-6).map((msg: any) => ({
-            role: msg.role === 'assistant' ? 'assistant' : 'user',
-            content: msg.content,
-          })),
-          {
-            role: 'user',
-            content: userMessage.content,
+    ];
+
+    // Call Google Gemini for response
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: systemPrompt }],
           },
-        ],
-        stream: false,
-      }),
-    });
+          contents: geminiMessages,
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 512,
+            topP: 0.95,
+          },
+        }),
+      }
+    );
 
     if (!response.ok) {
       const error = await response.text();
-      console.error('[Voice LLM] Anthropic error:', error);
-      throw new Error(`Anthropic API error: ${response.status}`);
+      console.error('[Voice LLM] Gemini error:', error);
+      throw new Error(`Gemini API error: ${response.status}`);
     }
 
     const data = await response.json();
-    const assistantMessage = data.content[0].text;
+    const assistantMessage = data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "I couldn't generate a response. Please try again.";
 
-    console.log('[Voice LLM] Generated response from Zep context');
+    console.log('[Voice LLM] Generated response from Zep context using Gemini');
 
     // Return in OpenAI-compatible format for Hume
     return new Response(
