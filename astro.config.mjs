@@ -23,11 +23,7 @@ export default defineConfig({
       }
     },
     ssr: {
-      noExternal: ['@thesysai/genui-sdk', '@crayonai/react-core', '@crayonai/react-ui'],
-      external: ['hume'] // Keep hume server-side only
-    },
-    optimizeDeps: {
-      exclude: ['hume'] // Don't try to bundle hume for the browser
+      noExternal: ['@thesysai/genui-sdk', '@crayonai/react-core', '@crayonai/react-ui']
     }
   }
 });

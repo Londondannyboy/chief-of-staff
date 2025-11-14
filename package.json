@@ -26,7 +26,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@thesysai/genui-sdk": "^0.7.1",
     "astro": "^5.15.4",
-    "hume": "^0.15.4",
     "lucide-react": "^0.469.0",
     "marked": "^17.0.0",
     "react": "^18.3.1",
