@@ -20,10 +20,15 @@ export default defineConfig({
       alias: {
         'lodash/escape': 'lodash/escape.js',
         'lodash/unescape': 'lodash/unescape.js',
+        // Stub out hume for browser - it's a transitive dep of @humeai/voice-react
+        'hume': false,
       }
     },
     ssr: {
       noExternal: ['@thesysai/genui-sdk', '@crayonai/react-core', '@crayonai/react-ui']
+    },
+    optimizeDeps: {
+      exclude: ['hume']
     }
   }
 });
