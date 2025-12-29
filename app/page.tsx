@@ -421,11 +421,9 @@ export default function Home() {
 
           <div className="grid gap-4">
             {featuredJobs.map((job) => (
-              <a
+              <Link
                 key={job.id}
-                href={job.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/job/${job.id}`}
                 className="job-card bg-gray-900/50 rounded-xl overflow-hidden flex flex-col md:flex-row hover:bg-gray-800/50 transition-colors group"
               >
                 {/* Hero Image */}
@@ -466,11 +464,11 @@ export default function Home() {
                       {job.type}
                     </span>
                     <span className="bg-amber-500 group-hover:bg-amber-400 text-black font-bold py-2 px-5 rounded transition-all">
-                      Apply
+                      View →
                     </span>
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
 

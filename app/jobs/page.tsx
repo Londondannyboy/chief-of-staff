@@ -313,11 +313,9 @@ export default function JobsPage() {
                 {/* Jobs Grid */}
                 <div className="grid gap-4">
                   {jobs.map((job) => (
-                    <a
+                    <Link
                       key={job.id}
-                      href={job.externalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={`/job/${job.id}`}
                       className="job-card bg-gray-900/50 rounded-xl overflow-hidden flex flex-col lg:flex-row hover:bg-gray-800/50 transition-colors group"
                     >
                       {/* Hero Image */}
@@ -394,12 +392,12 @@ export default function JobsPage() {
                               {job.companyStage}
                             </span>
                             <span className="mt-2 bg-amber-500 group-hover:bg-amber-400 text-black font-bold py-2 px-5 rounded transition-all whitespace-nowrap">
-                              Apply →
+                              View Job →
                             </span>
                           </div>
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -412,7 +410,7 @@ export default function JobsPage() {
       <section className="py-12 bg-gray-900/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-gray-400 text-sm">
-            <strong className="text-gray-300">Transparency:</strong> As a <Link href="/" className="text-amber-400 hover:underline">Chief of Staff recruitment agency</Link>, we aggregate job listings from LinkedIn, company career pages, and public job boards. Clicking &quot;Apply&quot; takes you directly to the original posting. We do not handle applications.
+            <strong className="text-gray-300">Transparency:</strong> As a <Link href="/" className="text-amber-400 hover:underline">Chief of Staff recruitment agency</Link>, we aggregate job listings from LinkedIn, company career pages, and public job boards. View job details on our site, then apply directly on the employer&apos;s website.
           </p>
         </div>
       </section>
