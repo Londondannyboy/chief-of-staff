@@ -1,12 +1,40 @@
-import Link from "next/link";
-import { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Contact Us | Chief of Staff Quest",
-  description: "Get in touch with Chief of Staff Quest. Post a job, inquire about recruitment services, or ask questions about Chief of Staff careers.",
-};
+import Link from "next/link";
+import { useState } from "react";
 
 export default function ContactPage() {
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    type: 'post-job',
+    message: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormState('submitting');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setFormState('success');
+        setFormData({ name: '', email: '', company: '', type: 'post-job', message: '' });
+      } else {
+        setFormState('error');
+      }
+    } catch {
+      setFormState('error');
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white">
       {/* Navigation */}
@@ -22,7 +50,6 @@ export default function ContactPage() {
             <div className="hidden md:flex items-center gap-8">
               <Link href="/#jobs" className="text-gray-300 hover:text-amber-400 transition-colors">Browse Jobs</Link>
               <Link href="/#categories" className="text-gray-300 hover:text-amber-400 transition-colors">Categories</Link>
-              <Link href="/#careers" className="text-gray-300 hover:text-amber-400 transition-colors">Career Paths</Link>
               <Link href="/#faq" className="text-gray-300 hover:text-amber-400 transition-colors">FAQ</Link>
               <Link href="/contact" className="bg-amber-500 hover:bg-amber-400 text-black font-bold py-2 px-4 rounded-lg transition-all">
                 Post a Job
@@ -37,7 +64,7 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-black mb-4">
-              Get In <span className="text-amber-400">Touch</span>
+              Contact Our <span className="text-amber-400">Chief of Staff Recruitment Agency</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Looking to post a Chief of Staff role or have questions about our recruitment services? We&apos;d love to hear from you.
@@ -48,81 +75,109 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="bg-gray-900/50 border border-gray-700 rounded-2xl p-8">
               <h2 className="text-2xl font-bold mb-6">Send a Message</h2>
-              <form className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
-                    placeholder="John Smith"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
-                    placeholder="john@company.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-2">
-                    Company (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
-                    placeholder="Acme Corp"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="type" className="block text-sm font-medium text-gray-300 mb-2">
-                    What can we help with?
-                  </label>
-                  <select
-                    id="type"
-                    name="type"
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-amber-500"
+
+              {formState === 'success' ? (
+                <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-6 text-center">
+                  <span className="text-4xl mb-4 block">✅</span>
+                  <h3 className="text-xl font-bold text-green-400 mb-2">Message Sent!</h3>
+                  <p className="text-gray-300">Thank you for contacting our Chief of Staff recruitment agency. We&apos;ll be in touch shortly.</p>
+                  <button
+                    onClick={() => setFormState('idle')}
+                    className="mt-4 text-amber-400 hover:underline"
                   >
-                    <option value="post-job">Post a Job</option>
-                    <option value="recruitment">Recruitment Services</option>
-                    <option value="candidate">I&apos;m a Candidate</option>
-                    <option value="partnership">Partnership Inquiry</option>
-                    <option value="other">Other</option>
-                  </select>
+                    Send another message
+                  </button>
                 </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    required
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 resize-none"
-                    placeholder="Tell us about your Chief of Staff hiring needs or how we can help..."
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 px-8 rounded-lg transition-all btn-shine"
-                >
-                  Send Message
-                </button>
-              </form>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
+                      placeholder="John Smith"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
+                      placeholder="john@company.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-2">
+                      Company (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      id="company"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
+                      placeholder="Acme Corp"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="type" className="block text-sm font-medium text-gray-300 mb-2">
+                      What can we help with?
+                    </label>
+                    <select
+                      id="type"
+                      value={formData.type}
+                      onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-amber-500"
+                    >
+                      <option value="post-job">Post a Job</option>
+                      <option value="recruitment">Recruitment Services</option>
+                      <option value="candidate">I&apos;m a Candidate</option>
+                      <option value="partnership">Partnership Inquiry</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={5}
+                      required
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 resize-none"
+                      placeholder="Tell us about your Chief of Staff hiring needs or how we can help..."
+                    />
+                  </div>
+
+                  {formState === 'error' && (
+                    <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-400">
+                      Something went wrong. Please try again.
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={formState === 'submitting'}
+                    className="w-full bg-amber-500 hover:bg-amber-400 disabled:bg-amber-500/50 text-black font-bold py-4 px-8 rounded-lg transition-all btn-shine"
+                  >
+                    {formState === 'submitting' ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
+              )}
             </div>
 
             {/* Contact Info */}
@@ -148,16 +203,16 @@ export default function ContactPage() {
                     <span className="text-2xl">🌐</span>
                     <div>
                       <h3 className="font-bold text-white">Coverage</h3>
-                      <p className="text-gray-400">UK, US, and Global Remote</p>
+                      <p className="text-gray-400">UK, Europe, and Global Remote</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gradient-to-br from-amber-900/30 to-yellow-900/30 border border-amber-500/20 rounded-2xl p-8">
-                <h2 className="text-2xl font-bold mb-4">Post a Job</h2>
+                <h2 className="text-2xl font-bold mb-4">Post a Chief of Staff Job</h2>
                 <p className="text-gray-300 mb-6">
-                  Looking to hire a Chief of Staff? Submit your role and we&apos;ll feature it on our job board for free.
+                  Looking to hire a Chief of Staff? Submit your role to our Chief of Staff recruitment agency and we&apos;ll feature it for free.
                 </p>
                 <ul className="space-y-3 text-gray-400 mb-6">
                   <li className="flex items-center gap-2">
@@ -179,13 +234,13 @@ export default function ContactPage() {
                 <h2 className="text-xl font-bold mb-4">Quick Links</h2>
                 <ul className="space-y-3">
                   <li>
-                    <Link href="/#jobs" className="text-amber-400 hover:underline">Browse Chief of Staff Jobs</Link>
+                    <Link href="/jobs" className="text-amber-400 hover:underline">Browse Chief of Staff Jobs</Link>
                   </li>
                   <li>
-                    <Link href="/chief-of-staff-salary" className="text-amber-400 hover:underline">Salary Guide</Link>
+                    <a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">Chief of Staff Association</a>
                   </li>
                   <li>
-                    <Link href="/how-to-become-chief-of-staff" className="text-amber-400 hover:underline">How to Become a CoS</Link>
+                    <a href="https://hbr.org" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">Harvard Business Review</a>
                   </li>
                 </ul>
               </div>
@@ -204,7 +259,7 @@ export default function ContactPage() {
             </span>
           </Link>
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Chief of Staff Quest. All rights reserved.
+            &copy; {new Date().getFullYear()} Chief of Staff Quest - Chief of Staff Recruitment Agency. All rights reserved.
           </p>
         </div>
       </footer>

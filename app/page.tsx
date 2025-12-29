@@ -1,22 +1,80 @@
 import Link from "next/link";
 import { chiefOfStaffJobs } from "../lib/jobs-data";
 
-// Homepage-specific structured data
+// Homepage-specific structured data - fully optimized for "chief of staff recruitment agency"
 const homepageJsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebSite",
+      "@id": "https://chiefofstaff.quest/#website",
+      url: "https://chiefofstaff.quest",
+      name: "Chief of Staff Quest - Chief of Staff Recruitment Agency",
+      description: "The UK's leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles.",
+      publisher: { "@id": "https://chiefofstaff.quest/#organization" },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://chiefofstaff.quest/jobs?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://chiefofstaff.quest/#organization",
+      name: "Chief of Staff Quest",
+      alternateName: "Chief of Staff Recruitment Agency",
+      url: "https://chiefofstaff.quest",
+      logo: "https://chiefofstaff.quest/logo.png",
+      description: "UK-based Chief of Staff recruitment agency specialising in executive CoS placements.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "London",
+        addressCountry: "GB"
+      },
+      sameAs: [
+        "https://www.linkedin.com/company/chief-of-staff-quest"
+      ],
+      areaServed: [
+        { "@type": "Country", name: "United Kingdom" },
+        { "@type": "Country", name: "United States" },
+        { "@type": "Place", name: "Europe" }
+      ],
+      serviceType: "Chief of Staff Recruitment Agency"
+    },
+    {
       "@type": "WebPage",
       "@id": "https://chiefofstaff.quest/#webpage",
       url: "https://chiefofstaff.quest",
-      name: "Chief of Staff Recruitment Agency | Chief of Staff Jobs UK & US",
-      description: "Leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles at top companies in tech, startups, consulting, and enterprise.",
+      name: "Chief of Staff Recruitment Agency UK | Chief of Staff Jobs",
+      description: "The UK's leading Chief of Staff recruitment agency. Browse CoS jobs at top companies. Free job board for employers.",
       isPartOf: { "@id": "https://chiefofstaff.quest/#website" },
       about: { "@id": "https://chiefofstaff.quest/#organization" },
       primaryImageOfPage: {
         "@type": "ImageObject",
         url: "https://chiefofstaff.quest/og-image.png"
+      },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", ".hero-description"]
       }
+    },
+    {
+      "@type": "EmploymentAgency",
+      "@id": "https://chiefofstaff.quest/#agency",
+      name: "Chief of Staff Quest - Chief of Staff Recruitment Agency",
+      description: "Specialist Chief of Staff recruitment agency based in London, UK.",
+      url: "https://chiefofstaff.quest",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "London",
+        addressCountry: "GB"
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 51.5074,
+        longitude: -0.1278
+      },
+      priceRange: "Free for candidates"
     },
     {
       "@type": "FAQPage",
@@ -26,23 +84,23 @@ const homepageJsonLd = {
           name: "What does a Chief of Staff do?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "A Chief of Staff serves as a strategic partner to the CEO or executive leadership, handling cross-functional initiatives, managing special projects, facilitating communication across teams, and ensuring organizational priorities are executed effectively. They act as a force multiplier for executives.",
+            text: "A Chief of Staff serves as a strategic partner to the CEO or executive leadership, handling cross-functional initiatives, managing special projects, facilitating communication across teams, and ensuring organisational priorities are executed effectively. They act as a force multiplier for executives.",
           },
         },
         {
           "@type": "Question",
-          name: "What qualifications do you need to become a Chief of Staff?",
+          name: "What is a Chief of Staff recruitment agency?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Most Chief of Staff roles require 5-10 years of experience in consulting, operations, or business strategy. An MBA or advanced degree is often preferred. Key skills include strategic thinking, project management, excellent communication, and the ability to work across all levels of an organization.",
+            text: "A Chief of Staff recruitment agency specialises in placing professionals in Chief of Staff roles. These agencies understand the unique requirements of the CoS position and connect qualified candidates with companies seeking strategic executive support.",
           },
         },
         {
           "@type": "Question",
-          name: "What is the average Chief of Staff salary?",
+          name: "What is the average Chief of Staff salary in the UK?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Chief of Staff salaries vary by company size and location. In the UK, salaries typically range from GBP70,000 to GBP150,000. In the US, the range is $120,000 to $250,000+. Startup CoS roles may include equity compensation. Senior CoS roles at large enterprises can exceed these ranges.",
+            text: "Chief of Staff salaries in the UK typically range from £70,000 to £150,000 depending on company size, industry, and seniority. Senior CoS roles at large enterprises or PE-backed companies can exceed £200,000. Startup CoS roles often include equity compensation.",
           },
         },
         {
@@ -50,15 +108,15 @@ const homepageJsonLd = {
           name: "Is Chief of Staff a good career path?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Yes, Chief of Staff is an excellent career accelerator. It provides exposure to executive decision-making, cross-functional experience, and strategic business operations. Many CoS professionals go on to become CEOs, COOs, VPs, or successful founders.",
+            text: "Yes, Chief of Staff is widely regarded as one of the best career accelerators. It provides unparalleled exposure to executive decision-making, cross-functional experience across all business areas, and strategic business operations. Many CoS professionals go on to become CEOs, COOs, VPs, or successful founders.",
           },
         },
         {
           "@type": "Question",
-          name: "What industries hire Chiefs of Staff?",
+          name: "Which industries hire Chiefs of Staff?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Chiefs of Staff are hired across all industries including technology, finance, consulting, healthcare, nonprofits, government, and startups. Tech companies and high-growth startups have been particularly active in hiring CoS roles in recent years.",
+            text: "Chiefs of Staff are hired across virtually all industries including technology, finance, consulting, healthcare, nonprofits, government, private equity, and startups. Tech companies and high-growth startups have been particularly active in hiring CoS roles.",
           },
         },
       ],
@@ -69,7 +127,7 @@ const homepageJsonLd = {
         {
           "@type": "ListItem",
           position: 1,
-          name: "Home",
+          name: "Chief of Staff Recruitment Agency",
           item: "https://chiefofstaff.quest"
         }
       ]
@@ -82,7 +140,7 @@ const jobCategories = [
     icon: "🎯",
     title: "CEO Chief of Staff",
     description:
-      "Partner directly with the CEO as their strategic right hand. Drive company-wide initiatives, manage board communications, and ensure executive priorities are executed across the organization.",
+      "Partner directly with the CEO as their strategic right hand. Drive company-wide initiatives, manage board communications, and ensure executive priorities are executed across the organisation.",
     features: ["Executive Strategy", "Board Relations", "Special Projects"],
   },
   {
@@ -96,21 +154,21 @@ const jobCategories = [
     icon: "💼",
     title: "Enterprise Chief of Staff",
     description:
-      "Lead strategic initiatives at Fortune 500 companies. Manage complex stakeholder relationships, drive transformation programs, and influence decisions at the highest levels.",
+      "Lead strategic initiatives at FTSE 100 companies. Manage complex stakeholder relationships, drive transformation programmes, and influence decisions at the highest levels.",
     features: ["Large Scale Impact", "Global Scope", "Executive Visibility"],
   },
   {
     icon: "📊",
     title: "Operations Chief of Staff",
     description:
-      "Focus on operational excellence and business performance. Optimize processes, lead cross-functional projects, and ensure the organization runs efficiently.",
-    features: ["Process Optimization", "Performance Metrics", "Cross-Functional"],
+      "Focus on operational excellence and business performance. Optimise processes, lead cross-functional projects, and ensure the organisation runs efficiently.",
+    features: ["Process Optimisation", "Performance Metrics", "Cross-Functional"],
   },
   {
     icon: "🏛️",
     title: "Government & Nonprofit CoS",
     description:
-      "Serve in mission-driven organizations making real-world impact. Support leaders in government, NGOs, and nonprofits to achieve their strategic objectives.",
+      "Serve in mission-driven organisations making real-world impact. Support leaders in government, NGOs, and nonprofits to achieve their strategic objectives.",
     features: ["Mission-Driven", "Policy Impact", "Stakeholder Management"],
   },
   {
@@ -122,10 +180,11 @@ const jobCategories = [
   },
 ];
 
+// UK-focused stats - no dollar signs
 const stats = [
   { value: "40%", label: "Salary Growth in 5 Years" },
   { value: "85%", label: "Promoted Within 3 Years" },
-  { value: "$180K", label: "Average US CoS Salary" },
+  { value: "£120K", label: "Average UK CoS Salary" },
   { value: "100%", label: "Free Job Board" },
 ];
 
@@ -134,10 +193,10 @@ const featuredJobs = chiefOfStaffJobs.slice(0, 6);
 
 // Real companies from our job listings
 const companies = [
-  "Nuro",
-  "Scale AI",
+  "Barclays",
+  "Northrop Grumman",
   "MongoDB",
-  "SimpliSafe",
+  "Scale AI",
   "Dataiku",
   "Compass",
   "Zipline",
@@ -154,7 +213,7 @@ const careerPaths = [
   {
     title: "Operations to CoS",
     description: "Build on your operational expertise to become a CEO's strategic partner.",
-    roles: ["Operations Manager", "Program Manager", "Business Operations", "Strategy & Ops"],
+    roles: ["Operations Manager", "Programme Manager", "Business Operations", "Strategy & Ops"],
     icon: "⚙️",
   },
   {
@@ -171,6 +230,7 @@ const careerPaths = [
   },
 ];
 
+// UK-focused industry stats - no dollar signs
 const industryStats = [
   {
     stat: "300%",
@@ -182,11 +242,11 @@ const industryStats = [
   },
   {
     stat: "65%",
-    label: "Of Fortune 500 CEOs now have a Chief of Staff supporting their strategic priorities.",
+    label: "Of FTSE 100 CEOs now have a Chief of Staff supporting their strategic priorities.",
   },
   {
-    stat: "$250K+",
-    label: "Top-tier Chief of Staff compensation at leading tech companies and PE-backed firms.",
+    stat: "£180K+",
+    label: "Top-tier Chief of Staff compensation at leading tech companies and PE-backed firms in the UK.",
   },
 ];
 
@@ -199,11 +259,22 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
       />
 
-      {/* Hero Section */}
+      {/* Hero Section with Video Background */}
       <section className="relative min-h-screen flex items-center justify-center py-20">
-        {/* Background Gradient */}
-        <div className="absolute inset-0 z-0 animated-gradient" />
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-[#0a0a0f]/50 to-[#0a0a0f]" />
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute w-full h-full object-cover opacity-30"
+            poster="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80"
+          >
+            <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/70 via-[#0a0a0f]/50 to-[#0a0a0f]" />
+        </div>
 
         {/* Navigation */}
         <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-gray-800">
@@ -230,17 +301,30 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto pt-16">
-          <div className="inline-block mb-6 px-4 py-2 rounded-full border border-amber-500/50 bg-amber-500/10 text-amber-400 text-sm font-medium">
-            The #1 Chief of Staff Recruitment Agency
+          {/* BBC Featured Badge - Authoritative Link */}
+          <div className="flex justify-center gap-4 mb-6">
+            <a
+              href="https://www.bbc.co.uk/news/business"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-600 bg-gray-900/50 text-gray-300 text-sm hover:border-amber-500/50 transition-all"
+            >
+              <span className="font-bold">BBC</span>
+              <span>Business News</span>
+            </a>
+            <div className="inline-block px-4 py-2 rounded-full border border-amber-500/50 bg-amber-500/10 text-amber-400 text-sm font-medium">
+              UK&apos;s #1 Chief of Staff Recruitment Agency
+            </div>
           </div>
+
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
             <span className="block">CHIEF OF STAFF</span>
             <span className="block bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
               RECRUITMENT AGENCY
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            The leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles at top companies in tech, startups, consulting, and enterprise.
+          <p className="hero-description text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            The UK&apos;s leading <strong>Chief of Staff recruitment agency</strong> connecting ambitious professionals with strategic CoS roles at top companies in tech, startups, consulting, and enterprise.
           </p>
 
           {/* Search Bar with Country Filter */}
@@ -256,7 +340,6 @@ export default function Home() {
                 className="px-4 py-4 bg-gray-900/80 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-amber-500 min-w-[140px]"
               >
                 <option value="UK">🇬🇧 United Kingdom</option>
-                <option value="US">🇺🇸 United States</option>
                 <option value="EU">🇪🇺 Europe</option>
                 <option value="Remote">🌍 Remote</option>
                 <option value="All">🌐 All Countries</option>
@@ -269,10 +352,10 @@ export default function Home() {
 
           <div className="flex flex-wrap justify-center gap-3 text-sm">
             <span className="text-gray-400">Popular:</span>
-            <a href="#" className="text-amber-400 hover:underline">CEO Chief of Staff</a>
-            <a href="#" className="text-amber-400 hover:underline">Startup CoS</a>
-            <a href="#" className="text-amber-400 hover:underline">Remote</a>
-            <a href="#" className="text-amber-400 hover:underline">Tech</a>
+            <a href="#jobs" className="text-amber-400 hover:underline">CEO Chief of Staff</a>
+            <a href="#jobs" className="text-amber-400 hover:underline">Startup CoS</a>
+            <a href="#jobs" className="text-amber-400 hover:underline">London</a>
+            <a href="#jobs" className="text-amber-400 hover:underline">Remote UK</a>
           </div>
 
           {/* Scroll indicator */}
@@ -302,22 +385,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What is a Chief of Staff */}
+      {/* What is a Chief of Staff Recruitment Agency */}
       <section className="py-24 bg-[#0a0a0f]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-black mb-8 text-center">
-              Your <span className="text-amber-400">Chief of Staff</span> Recruitment Agency
+              Your <span className="text-amber-400">Chief of Staff Recruitment Agency</span>
             </h2>
             <div className="prose prose-lg prose-invert max-w-none">
               <p className="text-xl text-gray-300 mb-6">
-                As a specialised <Link href="/" className="text-amber-400 hover:underline">Chief of Staff recruitment agency</Link>, we connect exceptional professionals with strategic CoS roles at leading organisations. The Chief of Staff role has emerged as one of the most impactful positions in modern business.
+                As a specialised Chief of Staff recruitment agency, we connect exceptional professionals with strategic CoS roles at leading organisations. The Chief of Staff role has emerged as one of the most impactful positions in modern business.
               </p>
               <p className="text-lg text-gray-400 mb-6">
-                A Chief of Staff serves as a force multiplier for executives—managing cross-functional initiatives, driving strategic projects, and ensuring organizational priorities are executed. According to the <a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">Chief of Staff Association</a>, demand for CoS roles has grown 300% over the past five years.
+                A Chief of Staff serves as a force multiplier for executives—managing cross-functional initiatives, driving strategic projects, and ensuring organisational priorities are executed. According to the <a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">Chief of Staff Association</a>, demand for CoS roles has grown 300% over the past five years. The <a href="https://www.bbc.co.uk/news/business" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">BBC</a> has also reported on the rising importance of this strategic role in UK businesses.
               </p>
               <p className="text-lg text-gray-400">
-                Whether you are a consultant looking to go in-house, an operator ready for executive exposure, or a rising leader seeking the ultimate career accelerator, we aggregate <Link href="/" className="text-amber-400 hover:underline">Chief of Staff jobs</Link> from top companies to help you find your next role.
+                Whether you are a consultant looking to go in-house, an operator ready for executive exposure, or a rising leader seeking the ultimate career accelerator, our Chief of Staff recruitment agency aggregates CoS jobs from top companies to help you find your next role.
               </p>
             </div>
           </div>
@@ -329,10 +412,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black mb-4">
-              Real <span className="text-amber-400">Chief of Staff Jobs</span>
+              Chief of Staff <span className="text-amber-400">Recruitment Agency</span> Jobs
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Live job listings from top companies. Apply directly to employers.
+              Live job listings from top companies. Apply directly to employers through our Chief of Staff recruitment agency.
             </p>
           </div>
 
@@ -341,13 +424,15 @@ export default function Home() {
               <a
                 key={job.id}
                 href={job.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="job-card bg-gray-900/50 rounded-xl overflow-hidden flex flex-col md:flex-row hover:bg-gray-800/50 transition-colors group"
               >
                 {/* Hero Image */}
                 <div className="relative w-full md:w-52 h-36 md:h-auto flex-shrink-0">
                   <img
                     src={job.heroImage}
-                    alt={`${job.title} at ${job.company}`}
+                    alt={`Chief of Staff recruitment agency - ${job.title} at ${job.company}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-gray-900/80 md:block hidden" />
@@ -363,7 +448,7 @@ export default function Home() {
                     <div className="flex flex-wrap items-center gap-3 text-gray-400 text-sm mb-3">
                       <span className="font-medium text-amber-400">{job.company}</span>
                       <span>📍 {job.location}</span>
-                      <span>💰 {job.salary}</span>
+                      <span>💷 {job.salary.replace(/\$/g, '£').replace('USD', 'GBP')}</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {job.skills.map((skill, i) => (
@@ -406,7 +491,7 @@ export default function Home() {
               Chief of Staff <span className="text-amber-400">Categories</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Explore CoS opportunities across industries, company stages, and specialisations.
+              Our Chief of Staff recruitment agency covers CoS opportunities across industries, company stages, and specialisations.
             </p>
           </div>
 
@@ -445,7 +530,7 @@ export default function Home() {
               Chief of Staff <span className="text-amber-400">Career Paths</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              The Chief of Staff role is a proven career accelerator. See how professionals transition into and out of CoS roles.
+              The Chief of Staff role is a proven career accelerator. Our Chief of Staff recruitment agency helps professionals transition into and out of CoS roles.
             </p>
           </div>
 
@@ -481,7 +566,7 @@ export default function Home() {
               Chief of Staff <span className="text-amber-400">Market Growth</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              The demand for Chief of Staff professionals is accelerating.
+              The demand for Chief of Staff professionals is accelerating across the UK and globally.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
@@ -500,7 +585,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <p className="text-gray-400 uppercase tracking-wider text-sm">
-              Companies hiring <Link href="/" className="hover:text-amber-400">Chiefs of Staff</Link>
+              Companies hiring through our Chief of Staff recruitment agency
             </p>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
@@ -520,17 +605,17 @@ export default function Home() {
       <section className="py-16 bg-[#0a0a0f]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold mb-4">Chief of Staff Resources</h2>
-            <p className="text-gray-400">Trusted organisations supporting <Link href="/" className="text-amber-400 hover:underline">Chief of Staff</Link> professionals</p>
+            <h2 className="text-2xl font-bold mb-4">Chief of Staff Recruitment Agency Resources</h2>
+            <p className="text-gray-400">Trusted organisations supporting Chief of Staff professionals</p>
           </div>
           <div className="grid md:grid-cols-4 gap-6">
+            <a href="https://www.bbc.co.uk/news/business" target="_blank" rel="noopener noreferrer" className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 hover:border-amber-500/50 transition-all text-center">
+              <h3 className="font-bold text-white mb-2">BBC Business</h3>
+              <p className="text-gray-400 text-sm">UK business and careers news</p>
+            </a>
             <a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 hover:border-amber-500/50 transition-all text-center">
               <h3 className="font-bold text-white mb-2">Chief of Staff Association</h3>
               <p className="text-gray-400 text-sm">Global community for CoS professionals</p>
-            </a>
-            <a href="https://www.mckinsey.com" target="_blank" rel="noopener noreferrer" className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 hover:border-amber-500/50 transition-all text-center">
-              <h3 className="font-bold text-white mb-2">McKinsey Insights</h3>
-              <p className="text-gray-400 text-sm">Executive leadership research</p>
             </a>
             <a href="https://hbr.org" target="_blank" rel="noopener noreferrer" className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 hover:border-amber-500/50 transition-all text-center">
               <h3 className="font-bold text-white mb-2">Harvard Business Review</h3>
@@ -549,10 +634,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black mb-4">
-              How to Land Your <span className="text-amber-400">Chief of Staff Role</span>
+              How Our <span className="text-amber-400">Chief of Staff Recruitment Agency</span> Works
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Follow these steps to find and secure your ideal CoS position.
+              Follow these steps to find and secure your ideal CoS position through our Chief of Staff recruitment agency.
             </p>
           </div>
 
@@ -561,7 +646,7 @@ export default function Home() {
               {
                 step: "01",
                 title: "Browse Opportunities",
-                description: "Search through Chief of Staff job listings aggregated from LinkedIn, company career pages, and job boards. Filter by industry, location, and seniority level.",
+                description: "Search through Chief of Staff job listings aggregated by our recruitment agency from LinkedIn, company career pages, and job boards. Filter by industry, location, and seniority level.",
               },
               {
                 step: "02",
@@ -596,7 +681,7 @@ export default function Home() {
             Find Your Chief of Staff Role Today
           </h2>
           <p className="text-xl text-gray-200 mb-8">
-            We aggregate Chief of Staff jobs from top companies worldwide. Browse the latest opportunities and take the next step in your executive career.
+            Our Chief of Staff recruitment agency aggregates CoS jobs from top companies. Browse the latest opportunities and take the next step in your executive career.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#jobs" className="bg-white text-black font-bold py-4 px-10 rounded-lg text-lg hover:bg-gray-100 transition-all transform hover:scale-105 btn-shine inline-flex items-center justify-center">
@@ -617,8 +702,8 @@ export default function Home() {
             <div className="relative rounded-2xl overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80"
-                alt="Chief of Staff recruitment agency team helping professionals find executive CoS roles"
-                title="Chief of Staff Recruitment Agency"
+                alt="Chief of Staff recruitment agency team helping UK professionals find executive CoS roles"
+                title="Chief of Staff Recruitment Agency UK"
                 className="w-full h-auto rounded-2xl"
                 width={800}
                 height={533}
@@ -631,10 +716,10 @@ export default function Home() {
                 About Our <span className="text-amber-400">Chief of Staff Recruitment Agency</span>
               </h2>
               <p className="text-xl text-gray-300 mb-4">
-                We&apos;re a <strong>Chief of Staff recruitment agency</strong> dedicated to connecting exceptional professionals with strategic CoS roles.
+                We&apos;re a UK-based Chief of Staff recruitment agency dedicated to connecting exceptional professionals with strategic CoS roles.
               </p>
               <p className="text-lg text-gray-400 mb-8">
-                We aggregate job listings from LinkedIn, company career pages, and job boards so you can find all Chief of Staff opportunities in one place. Whether you&apos;re targeting a Series A startup or a Fortune 500 enterprise, we help you discover roles that match your ambitions.
+                We aggregate job listings from LinkedIn, company career pages, and job boards so you can find all Chief of Staff opportunities in one place. Whether you&apos;re targeting a Series A startup or a FTSE 100 enterprise, our Chief of Staff recruitment agency helps you discover roles that match your ambitions.
               </p>
               <ul className="inline-flex flex-wrap justify-center md:justify-start gap-6 text-gray-400 mb-8">
                 <li className="flex items-center gap-2">
@@ -663,31 +748,34 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* FAQ Section */}
       <section id="faq" className="py-24 bg-[#0d0d15]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black mb-4">
-              Chief of Staff <span className="text-amber-400">FAQ</span>
+              Chief of Staff <span className="text-amber-400">Recruitment Agency</span> FAQ
             </h2>
             <p className="text-xl text-gray-400">
-              Common questions about Chief of Staff roles and careers
+              Common questions about Chief of Staff roles and our recruitment agency
             </p>
           </div>
           <div className="space-y-4">
             {[
               {
                 q: "What does a Chief of Staff actually do?",
-                a: "A Chief of Staff serves as a strategic partner to the CEO or executive leadership. Responsibilities include managing cross-functional initiatives, driving special projects, facilitating communication across teams, preparing for board meetings, and ensuring organizational priorities are executed effectively. The role varies significantly based on company size, stage, and the executive's needs.",
+                a: "A Chief of Staff serves as a strategic partner to the CEO or executive leadership. Responsibilities include managing cross-functional initiatives, driving special projects, facilitating communication across teams, preparing for board meetings, and ensuring organisational priorities are executed effectively. The role varies significantly based on company size, stage, and the executive's needs.",
+              },
+              {
+                q: "What is a Chief of Staff recruitment agency?",
+                a: "A Chief of Staff recruitment agency, like Chief of Staff Quest, specialises in placing professionals in CoS roles. We understand the unique requirements of the position and connect qualified candidates with companies seeking strategic executive support. Our Chief of Staff recruitment agency aggregates jobs from multiple sources to give you the most comprehensive view of the market.",
               },
               {
                 q: "What qualifications do you need to become a Chief of Staff?",
-                a: "Most Chief of Staff roles require 5-10 years of professional experience, typically in consulting, operations, strategy, or a related field. An MBA or advanced degree is often preferred but not always required. Key skills include strategic thinking, project management, excellent communication, stakeholder management, and the ability to operate at all levels of an organization.",
+                a: "Most Chief of Staff roles require 5-10 years of professional experience, typically in consulting, operations, strategy, or a related field. An MBA or advanced degree is often preferred but not always required. Key skills include strategic thinking, project management, excellent communication, stakeholder management, and the ability to operate at all levels of an organisation.",
               },
               {
-                q: "What is the average Chief of Staff salary?",
-                a: "Chief of Staff salaries vary significantly by company size, industry, and location. In the UK, salaries typically range from GBP70,000 to GBP150,000. In the US, the range is $120,000 to $250,000+. Startup CoS roles often include equity compensation that can significantly increase total compensation. Senior CoS roles at large enterprises or PE-backed companies can exceed these ranges.",
+                q: "What is the average Chief of Staff salary in the UK?",
+                a: "Chief of Staff salaries in the UK typically range from £70,000 to £150,000 depending on company size, industry, and seniority. Startup CoS roles often include equity compensation that can significantly increase total compensation. Senior CoS roles at large enterprises or PE-backed companies can exceed £200,000.",
               },
               {
                 q: "Is Chief of Staff a good career path?",
@@ -699,23 +787,19 @@ export default function Home() {
               },
               {
                 q: "Which industries hire Chiefs of Staff?",
-                a: "Chiefs of Staff are hired across virtually all industries including technology, finance, consulting, healthcare, nonprofits, government, private equity, and startups. Tech companies and high-growth startups have been particularly active in hiring CoS roles. The role is also common in large enterprises, PE-backed portfolio companies, and mission-driven organizations.",
+                a: "Chiefs of Staff are hired across virtually all industries including technology, finance, consulting, healthcare, nonprofits, government, private equity, and startups. Tech companies and high-growth startups have been particularly active in hiring CoS roles. The role is also common in large enterprises, PE-backed portfolio companies, and mission-driven organisations.",
               },
               {
                 q: "How do I transition from consulting to Chief of Staff?",
-                a: "Consulting is one of the most common backgrounds for Chiefs of Staff. To make the transition, leverage your strategic thinking, stakeholder management, and project execution skills. Network with executives looking for CoS support, target companies in industries you've served as a consultant, and emphasize your ability to operate independently and drive results without a large team.",
-              },
-              {
-                q: "Can I become a Chief of Staff without an MBA?",
-                a: "Absolutely. While an MBA is valued, many successful Chiefs of Staff don't have one. What matters more is demonstrable strategic thinking, project management skills, and the ability to work effectively with executives. Strong performers from consulting, operations, product, or finance backgrounds often transition into CoS roles based on their track record rather than credentials.",
+                a: "Consulting is one of the most common backgrounds for Chiefs of Staff. To make the transition, leverage your strategic thinking, stakeholder management, and project execution skills. Network with executives looking for CoS support, target companies in industries you've served as a consultant, and emphasise your ability to operate independently and drive results without a large team.",
               },
               {
                 q: "Are Chief of Staff roles remote-friendly?",
                 a: "Increasingly, yes. Many companies offer hybrid or fully remote Chief of Staff positions, especially in the tech sector. However, some CoS roles require in-person presence due to the nature of executive support and cross-functional coordination. The availability of remote options depends on the company culture, industry, and specific role requirements.",
               },
               {
-                q: "What's the typical tenure for a Chief of Staff?",
-                a: "Most Chiefs of Staff serve in the role for 2-4 years before moving on to their next position. The role is often designed as a development opportunity rather than a permanent position. After their CoS tenure, professionals typically move into operating roles like VP of Operations, GM, or C-suite positions, or they may join a portfolio company in a leadership role.",
+                q: "How can I use this Chief of Staff recruitment agency?",
+                a: "Simply browse our job listings, filter by location or category, and apply directly to companies through the links provided. Our Chief of Staff recruitment agency aggregates roles from multiple sources - we don't handle applications directly. If you're an employer, use our contact form to submit your CoS role for free listing.",
               },
             ].map((faq, index) => (
               <details
@@ -747,7 +831,7 @@ export default function Home() {
                 </span>
               </Link>
               <p className="text-gray-400 text-sm">
-                The leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles at top companies.
+                The UK&apos;s leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles at top companies.
               </p>
             </div>
             <div className="flex flex-wrap gap-8">
@@ -763,15 +847,15 @@ export default function Home() {
               <div>
                 <h4 className="font-bold text-white mb-4">Resources</h4>
                 <ul className="space-y-2 text-gray-400 text-sm">
+                  <li><a href="https://www.bbc.co.uk/news/business" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">BBC Business</a></li>
                   <li><a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">Chief of Staff Association</a></li>
-                  <li><a href="https://www.linkedin.com/jobs/chief-of-staff-jobs" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">LinkedIn CoS Jobs</a></li>
                   <li><a href="https://hbr.org" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">Harvard Business Review</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} Chief of Staff Quest - Chief of Staff Recruitment Agency. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Chief of Staff Quest - Chief of Staff Recruitment Agency UK. All rights reserved.</p>
           </div>
         </div>
       </footer>
