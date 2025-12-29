@@ -170,13 +170,27 @@ const categoryColors: Record<string, string> = {
 
 export default async function JobPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const job = await getJobBySlug(slug)
+
+  let job: Job | null = null
+  let relatedJobs: Job[] = []
+
+  try {
+    job = await getJobBySlug(slug)
+  } catch (error) {
+    console.error('Error fetching job:', error)
+  }
 
   if (!job) {
     notFound()
   }
 
-  const relatedJobs = await getRelatedJobs(slug, job.category || 'tech', 3)
+  try {
+    relatedJobs = await getRelatedJobs(slug, job.category || 'tech', 3)
+  } catch (error) {
+    console.error('Error fetching related jobs:', error)
+    // Continue without related jobs
+  }
+
   const categoryColor = categoryColors[job.category || 'tech'] || categoryColors.tech
   const categoryLabel = categoryLabels[job.category || 'tech'] || 'Technology'
 
