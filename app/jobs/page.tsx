@@ -9,13 +9,106 @@ import {
 } from "../../lib/jobs-data";
 
 export const metadata: Metadata = {
-  title: "Chief of Staff Jobs | Browse CoS Roles | Chief of Staff Quest",
+  title: "Chief of Staff Jobs UK & US | Browse CoS Roles | Chief of Staff Recruitment Agency",
   description:
-    "Browse Chief of Staff jobs across tech, finance, healthcare, consulting, and startups. Find CoS roles at top companies in the UK, US, and worldwide.",
+    "Browse Chief of Staff jobs in the UK, US, and worldwide. Our Chief of Staff recruitment agency aggregates CoS roles from top companies in tech, finance, healthcare, and startups.",
+  keywords: [
+    "chief of staff jobs",
+    "chief of staff jobs uk",
+    "chief of staff recruitment agency",
+    "cos jobs",
+    "chief of staff roles",
+  ],
   openGraph: {
     title: "Chief of Staff Jobs | Browse CoS Roles",
-    description: "Browse Chief of Staff jobs across industries. Find your next CoS role.",
+    description: "Browse Chief of Staff jobs from our recruitment agency. Find CoS roles in the UK, US, and worldwide.",
   },
+  alternates: {
+    canonical: "https://chiefofstaff.quest/jobs",
+  },
+};
+
+// Generate JobPosting schema for each job
+const generateJobPostingSchema = () => {
+  return chiefOfStaffJobs.map((job) => ({
+    "@type": "JobPosting",
+    title: job.title,
+    description: job.description,
+    datePosted: job.postedDate,
+    validThrough: job.validThrough || new Date(new Date(job.postedDate).getTime() + 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    employmentType: job.type === "Full-time" ? "FULL_TIME" : job.type === "Part-time" ? "PART_TIME" : "CONTRACTOR",
+    hiringOrganization: {
+      "@type": "Organization",
+      name: job.company,
+    },
+    jobLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: job.location.split(",")[0],
+        addressCountry: job.country,
+      },
+    },
+    ...(job.salary !== "Competitive" && job.salary !== "Competitive + Equity" && job.salary !== "Competitive + Bonus" && {
+      baseSalary: {
+        "@type": "MonetaryAmount",
+        currency: job.salary.includes("£") ? "GBP" : job.salary.includes("€") ? "EUR" : "USD",
+        value: {
+          "@type": "QuantitativeValue",
+          unitText: "YEAR",
+        },
+      },
+    }),
+    skills: job.skills.join(", "),
+    url: job.externalUrl,
+  }));
+};
+
+// Page-level structured data
+const jobsPageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://chiefofstaff.quest/jobs#webpage",
+      url: "https://chiefofstaff.quest/jobs",
+      name: "Chief of Staff Jobs | Browse CoS Roles",
+      description: "Browse Chief of Staff jobs from our recruitment agency. Find CoS roles in tech, finance, healthcare, and startups.",
+      isPartOf: { "@id": "https://chiefofstaff.quest/#website" },
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://chiefofstaff.quest"
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Jobs",
+            item: "https://chiefofstaff.quest/jobs"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "ItemList",
+      name: "Chief of Staff Job Listings",
+      numberOfItems: chiefOfStaffJobs.length,
+      itemListElement: chiefOfStaffJobs.slice(0, 10).map((job, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "JobPosting",
+          title: job.title,
+          hiringOrganization: { "@type": "Organization", name: job.company },
+          jobLocation: { "@type": "Place", address: job.location },
+        },
+      })),
+    },
+  ],
 };
 
 // Get badge styling for job type
@@ -56,13 +149,24 @@ export default function JobsPage() {
     return acc;
   }, {} as Record<JobCategory, typeof chiefOfStaffJobs>);
 
+  // Count UK jobs
+  const ukJobs = chiefOfStaffJobs.filter(j => j.country === "United Kingdom").length;
+  const usJobs = chiefOfStaffJobs.filter(j => j.country === "United States").length;
+  const remoteJobs = chiefOfStaffJobs.filter(j => j.workMode === "Remote").length;
+
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobsPageJsonLd) }}
+      />
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2" title="Chief of Staff Recruitment Agency">
               <span className="text-2xl">🎯</span>
               <span className="font-bold text-xl">
                 <span className="text-amber-400">Chief of Staff</span> Quest
@@ -104,28 +208,45 @@ export default function JobsPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section with TLDR */}
       <section className="pt-32 pb-12 bg-gradient-to-b from-amber-900/20 to-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-black mb-4">
               <span className="text-amber-400">Chief of Staff</span> Jobs
             </h1>
+
+            {/* TLDR Summary Box */}
+            <div className="max-w-3xl mx-auto mb-6 p-4 bg-gray-900/50 border border-amber-500/30 rounded-xl">
+              <p className="text-lg text-gray-300">
+                <strong className="text-amber-400">TL;DR:</strong> Browse {chiefOfStaffJobs.length} real Chief of Staff jobs aggregated by our <Link href="/" className="text-amber-400 hover:underline font-semibold">Chief of Staff recruitment agency</Link>. Roles across {ukJobs} UK positions, {usJobs} US positions, and {remoteJobs} remote opportunities.
+              </p>
+            </div>
+
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Browse {chiefOfStaffJobs.length} Chief of Staff opportunities across
-              tech, finance, healthcare, consulting, and startups.
+              The UK&apos;s leading <Link href="/" className="text-amber-400 hover:underline">Chief of Staff recruitment agency</Link> aggregating CoS roles from top companies in tech, finance, healthcare, consulting, and startups.
             </p>
           </div>
 
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="flex flex-col sm:flex-row gap-4">
+          {/* Search Bar with Country Filter */}
+          <div className="max-w-3xl mx-auto mb-8">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 placeholder="Search by title, company, or skill..."
                 className="flex-1 px-6 py-4 bg-gray-900/80 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
               />
-              <button className="bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 px-8 rounded-xl transition-all">
+              <select
+                defaultValue="UK"
+                className="px-4 py-4 bg-gray-900/80 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-amber-500 min-w-[140px]"
+              >
+                <option value="UK">🇬🇧 United Kingdom</option>
+                <option value="US">🇺🇸 United States</option>
+                <option value="EU">🇪🇺 Europe</option>
+                <option value="Remote">🌍 Remote</option>
+                <option value="All">🌐 All Countries</option>
+              </select>
+              <button className="bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 px-8 rounded-xl transition-all whitespace-nowrap">
                 Search
               </button>
             </div>
@@ -157,6 +278,15 @@ export default function JobsPage() {
         </div>
       </section>
 
+      {/* Internal Link to Recruitment Agency */}
+      <section className="py-6 bg-[#0a0a0f]">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-gray-400">
+            All jobs aggregated by <Link href="/" className="text-amber-400 hover:underline font-medium">Chief of Staff Quest - the UK&apos;s specialist Chief of Staff recruitment agency</Link>. We connect ambitious professionals with strategic CoS roles.
+          </p>
+        </div>
+      </section>
+
       {/* Jobs by Category */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -171,7 +301,7 @@ export default function JobsPage() {
                 {/* Category Header */}
                 <div className="flex items-center gap-4 mb-6">
                   <h2 className="text-2xl font-bold text-white">
-                    {categoryLabels[category]}
+                    {categoryLabels[category]} Chief of Staff Jobs
                   </h2>
                   <span
                     className={`px-3 py-1 rounded-full text-sm ${colors.bg} border ${colors.border} ${colors.text}`}
@@ -194,7 +324,7 @@ export default function JobsPage() {
                       <div className="relative w-full lg:w-56 h-40 lg:h-auto flex-shrink-0">
                         <img
                           src={job.heroImage}
-                          alt={job.heroImageAlt}
+                          alt={`${job.title} - Chief of Staff job at ${job.company}`}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-gray-900/80 lg:block hidden" />
@@ -278,14 +408,11 @@ export default function JobsPage() {
         </div>
       </section>
 
-      {/* Transparency Notice */}
+      {/* Transparency Notice with Internal Link */}
       <section className="py-12 bg-gray-900/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-gray-400 text-sm">
-            <strong className="text-gray-300">Transparency:</strong> We aggregate
-            Chief of Staff job listings from LinkedIn, company career pages, and
-            public job boards. Clicking &quot;Apply&quot; takes you directly to the
-            original posting. We do not handle applications.
+            <strong className="text-gray-300">Transparency:</strong> As a <Link href="/" className="text-amber-400 hover:underline">Chief of Staff recruitment agency</Link>, we aggregate job listings from LinkedIn, company career pages, and public job boards. Clicking &quot;Apply&quot; takes you directly to the original posting. We do not handle applications.
           </p>
         </div>
       </section>
@@ -297,7 +424,7 @@ export default function JobsPage() {
             Hiring a Chief of Staff?
           </h2>
           <p className="text-xl text-gray-300 mb-6">
-            Post your role for free and reach qualified CoS candidates.
+            Post your role with our <Link href="/" className="text-amber-400 hover:underline">Chief of Staff recruitment agency</Link> for free and reach qualified CoS candidates.
           </p>
           <Link
             href="/contact"
@@ -309,32 +436,32 @@ export default function JobsPage() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer with Internal Links */}
       <footer className="bg-[#0a0a0f] border-t border-gray-800 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2" title="Chief of Staff Recruitment Agency">
               <span className="text-2xl">🎯</span>
               <span className="font-bold text-xl">
                 <span className="text-amber-400">Chief of Staff</span> Quest
               </span>
             </Link>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-              <Link href="/" className="hover:text-amber-400">
+              <Link href="/" className="hover:text-amber-400" title="Chief of Staff Recruitment Agency">
                 Home
               </Link>
               <Link href="/jobs" className="hover:text-amber-400">
                 Jobs
               </Link>
-              <Link href="/chief-of-staff-salary" className="hover:text-amber-400">
-                Salary Guide
+              <Link href="/contact" className="hover:text-amber-400">
+                Post a Job
               </Link>
               <Link href="/contact" className="hover:text-amber-400">
                 Contact
               </Link>
             </div>
             <p className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} Chief of Staff Quest
+              © {new Date().getFullYear()} Chief of Staff Quest - <Link href="/" className="hover:text-amber-400">Chief of Staff Recruitment Agency</Link>
             </p>
           </div>
         </div>
