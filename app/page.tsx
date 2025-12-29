@@ -131,6 +131,24 @@ const homepageJsonLd = {
           item: "https://chiefofstaff.quest"
         }
       ]
+    },
+    {
+      "@type": "VideoObject",
+      name: "What is a Chief of Staff? - Chief of Staff Role Explained",
+      description: "Learn what a Chief of Staff does and how this strategic executive role works. Our Chief of Staff recruitment agency explains the CoS position, typical responsibilities, salary expectations in the UK, and career paths. Discover how Chiefs of Staff support CEOs, drive cross-functional initiatives, and accelerate their careers into leadership roles.",
+      thumbnailUrl: "https://img.youtube.com/vi/VH3GyrNeBxg/maxresdefault.jpg",
+      uploadDate: "2024-01-15",
+      duration: "PT5M30S",
+      contentUrl: "https://www.youtube.com/watch?v=VH3GyrNeBxg",
+      embedUrl: "https://www.youtube.com/embed/VH3GyrNeBxg",
+      publisher: {
+        "@type": "Organization",
+        name: "Chief of Staff Quest",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://chiefofstaff.quest/logo.png"
+        }
+      }
     }
   ],
 };
@@ -189,7 +207,13 @@ const stats = [
 ];
 
 // Use real jobs from the shared data file
-const featuredJobs = chiefOfStaffJobs.slice(0, 6);
+// Sort jobs: UK first, then others. Show 12 jobs.
+const sortedJobs = [...chiefOfStaffJobs].sort((a, b) => {
+  if (a.country === 'United Kingdom' && b.country !== 'United Kingdom') return -1;
+  if (a.country !== 'United Kingdom' && b.country === 'United Kingdom') return 1;
+  return 0;
+});
+const featuredJobs = sortedJobs.slice(0, 12);
 
 // Real companies from our job listings
 const companies = [
@@ -404,17 +428,62 @@ export default function Home() {
               </p>
             </div>
 
-            {/* YouTube Video */}
+            {/* YouTube Videos */}
             <div className="mt-12">
-              <h3 className="text-2xl font-bold text-center mb-6">What Does a Chief of Staff Do?</h3>
-              <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
-                <iframe
-                  src="https://www.youtube.com/embed/VH3GyrNeBxg"
-                  title="What is a Chief of Staff? - Chief of Staff Role Explained"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                />
+              <h3 className="text-2xl font-bold text-center mb-8">Learn About the Chief of Staff Role</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Video 1 - Main explainer */}
+                <div>
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
+                    <iframe
+                      src="https://www.youtube.com/embed/VH3GyrNeBxg"
+                      title="What is a Chief of Staff? - Role Explained"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+                  <p className="text-gray-400 text-sm mt-2 text-center">What is a Chief of Staff?</p>
+                </div>
+                {/* Video 2 - Career path */}
+                <div>
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
+                    <iframe
+                      src="https://www.youtube.com/embed/lM5h6lDkPxA"
+                      title="Chief of Staff Career Path and Responsibilities"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+                  <p className="text-gray-400 text-sm mt-2 text-center">Chief of Staff Career Path</p>
+                </div>
+                {/* Video 3 - Day in the life */}
+                <div>
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
+                    <iframe
+                      src="https://www.youtube.com/embed/9L3rmCZQ0lY"
+                      title="Day in the Life of a Chief of Staff"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+                  <p className="text-gray-400 text-sm mt-2 text-center">Day in the Life of a CoS</p>
+                </div>
+                {/* Video 4 - Skills needed */}
+                <div>
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
+                    <iframe
+                      src="https://www.youtube.com/embed/PmDVDjgB6aU"
+                      title="Chief of Staff Skills and Qualifications"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+                  <p className="text-gray-400 text-sm mt-2 text-center">Skills You Need as Chief of Staff</p>
+                </div>
               </div>
               <p className="text-center text-gray-500 text-sm mt-4">
                 Learn more about the Chief of Staff role and how our recruitment agency can help you land your next CoS position.
