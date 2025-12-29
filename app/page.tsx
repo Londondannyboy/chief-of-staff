@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { chiefOfStaffJobs } from "../lib/jobs-data";
 
 // Homepage-specific structured data
 const homepageJsonLd = {
@@ -128,84 +129,19 @@ const stats = [
   { value: "100%", label: "Free Job Board" },
 ];
 
-const featuredJobs = [
-  {
-    id: "1",
-    title: "Chief of Staff to CEO",
-    company: "Series B Fintech Startup",
-    location: "London, UK",
-    salary: "GBP90,000 - GBP120,000 + Equity",
-    type: "Full-time",
-    skills: ["Strategy", "Operations", "Financial Analysis"],
-    heroImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
-    externalUrl: "#",
-  },
-  {
-    id: "2",
-    title: "Chief of Staff, Technology",
-    company: "Global Tech Enterprise",
-    location: "New York, US (Hybrid)",
-    salary: "$150,000 - $200,000",
-    type: "Full-time",
-    skills: ["Tech Operations", "Program Management", "Executive Communication"],
-    heroImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
-    externalUrl: "#",
-  },
-  {
-    id: "3",
-    title: "Chief of Staff to Managing Partner",
-    company: "Top-Tier Consulting Firm",
-    location: "London, UK",
-    salary: "GBP100,000 - GBP140,000",
-    type: "Full-time",
-    skills: ["Consulting Background", "Stakeholder Management", "Strategy"],
-    heroImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
-    externalUrl: "#",
-  },
-  {
-    id: "4",
-    title: "Chief of Staff to Founder",
-    company: "AI Startup (Seed Stage)",
-    location: "San Francisco, US",
-    salary: "$120,000 - $150,000 + 0.5% Equity",
-    type: "Full-time",
-    skills: ["AI/ML Knowledge", "Startup Operations", "Fundraising Support"],
-    heroImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
-    externalUrl: "#",
-  },
-  {
-    id: "5",
-    title: "Chief of Staff, Healthcare Division",
-    company: "Fortune 100 Healthcare Company",
-    location: "Remote (US)",
-    salary: "$140,000 - $180,000",
-    type: "Full-time",
-    skills: ["Healthcare Industry", "Change Management", "Executive Support"],
-    heroImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-    externalUrl: "#",
-  },
-  {
-    id: "6",
-    title: "Chief of Staff to COO",
-    company: "E-commerce Scale-up",
-    location: "Berlin, Germany",
-    salary: "EUR80,000 - EUR110,000",
-    type: "Full-time",
-    skills: ["E-commerce", "Operations", "Data Analysis"],
-    heroImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-    externalUrl: "#",
-  },
-];
+// Use real jobs from the shared data file
+const featuredJobs = chiefOfStaffJobs.slice(0, 6);
 
+// Real companies from our job listings
 const companies = [
-  "Google",
-  "Meta",
-  "Stripe",
-  "McKinsey",
-  "Goldman Sachs",
-  "Andreessen Horowitz",
-  "Spotify",
-  "Airbnb",
+  "Nuro",
+  "Scale AI",
+  "MongoDB",
+  "SimpliSafe",
+  "Dataiku",
+  "Compass",
+  "Zipline",
+  "Addepar",
 ];
 
 const careerPaths = [
