@@ -6,55 +6,72 @@ import { getJobBySlug, getRelatedJobs, getAllJobSlugs, Job } from '@/lib/db'
 export const revalidate = 3600 // Revalidate every hour
 
 // Generate static params for all jobs
+// Returns empty array on error - pages will be generated on-demand
 export async function generateStaticParams() {
   try {
     const slugs = await getAllJobSlugs()
-    return slugs.map((slug) => ({ slug }))
-  } catch {
+    // Filter out any invalid slugs
+    return slugs
+      .filter((slug) => slug && typeof slug === 'string' && slug.length > 0)
+      .map((slug) => ({ slug }))
+  } catch (error) {
+    console.error('Error generating static params:', error)
     return []
   }
 }
 
+// Enable dynamic rendering for unknown slugs
+export const dynamicParams = true
+
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const job = await getJobBySlug(slug)
 
-  if (!job) {
+  try {
+    const job = await getJobBySlug(slug)
+
+    if (!job) {
+      return {
+        title: 'Job Not Found | Chief of Staff Quest',
+        description: 'This Chief of Staff job is no longer available. Browse other CoS roles at Chief of Staff Quest.',
+      }
+    }
+
+    const title = `${job.title} at ${job.company} | Chief of Staff Jobs UK`
+    const description = `Apply for ${job.title} at ${job.company}. ${job.work_mode || ''} Chief of Staff role in ${job.location || 'UK'}. ${job.salary || 'Competitive salary'}. Browse more CoS jobs at Chief of Staff Quest.`
+
+    return {
+      title,
+      description,
+      keywords: [
+        'chief of staff jobs',
+        'chief of staff jobs uk',
+        'cos jobs',
+        job.company?.toLowerCase() || '',
+        job.category || '',
+        job.location || '',
+      ].filter(Boolean),
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+        url: `https://chiefofstaff.quest/job/${slug}`,
+        images: job.hero_image ? [job.hero_image] : undefined,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+      },
+      alternates: {
+        canonical: `https://chiefofstaff.quest/job/${slug}`,
+      },
+    }
+  } catch {
     return {
       title: 'Job Not Found | Chief of Staff Quest',
+      description: 'This Chief of Staff job is no longer available. Browse other CoS roles at Chief of Staff Quest.',
     }
-  }
-
-  const title = `${job.title} at ${job.company} | Chief of Staff Jobs UK`
-  const description = `Apply for ${job.title} at ${job.company}. ${job.work_mode} Chief of Staff role in ${job.location}. ${job.salary || 'Competitive salary'}. Browse more CoS jobs at Chief of Staff Quest.`
-
-  return {
-    title,
-    description,
-    keywords: [
-      'chief of staff jobs',
-      'chief of staff jobs uk',
-      'cos jobs',
-      job.company.toLowerCase(),
-      job.category || '',
-      job.location || '',
-    ].filter(Boolean),
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      url: `https://chiefofstaff.quest/job/${slug}`,
-      images: job.hero_image ? [job.hero_image] : undefined,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    alternates: {
-      canonical: `https://chiefofstaff.quest/job/${slug}`,
-    },
   }
 }
 
