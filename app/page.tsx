@@ -403,6 +403,23 @@ export default function Home() {
                 Whether you are a consultant looking to go in-house, an operator ready for executive exposure, or a rising leader seeking the ultimate career accelerator, our Chief of Staff recruitment agency aggregates CoS jobs from top companies to help you find your next role.
               </p>
             </div>
+
+            {/* YouTube Video */}
+            <div className="mt-12">
+              <h3 className="text-2xl font-bold text-center mb-6">What Does a Chief of Staff Do?</h3>
+              <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
+                <iframe
+                  src="https://www.youtube.com/embed/VH3GyrNeBxg"
+                  title="What is a Chief of Staff? - Chief of Staff Role Explained"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
+              </div>
+              <p className="text-center text-gray-500 text-sm mt-4">
+                Learn more about the Chief of Staff role and how our recruitment agency can help you land your next CoS position.
+              </p>
+            </div>
           </div>
         </div>
       </section>
