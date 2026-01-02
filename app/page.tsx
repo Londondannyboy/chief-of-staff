@@ -2,7 +2,7 @@ import Link from "next/link";
 import { chiefOfStaffJobs } from "../lib/jobs-data";
 import { LiteYouTube } from "./components/LiteYouTube";
 
-// Homepage-specific structured data - fully optimized for "chief of staff recruitment agency"
+// Homepage-specific structured data - honest representation
 const homepageJsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -10,8 +10,9 @@ const homepageJsonLd = {
       "@type": "WebSite",
       "@id": "https://chiefofstaff.quest/#website",
       url: "https://chiefofstaff.quest",
-      name: "Chief of Staff Quest - Chief of Staff Recruitment Agency",
-      description: "The UK's leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles.",
+      name: "Chief of Staff Recruitment Agency Quest",
+      alternateName: ["Chief of Staff Quest", "ChiefOfStaffQuest"],
+      description: "Chief of Staff recruitment agency aggregating CoS job opportunities. Browse Chief of Staff jobs in London, UK and remote.",
       publisher: { "@id": "https://chiefofstaff.quest/#organization" },
       potentialAction: {
         "@type": "SearchAction",
@@ -22,60 +23,35 @@ const homepageJsonLd = {
     {
       "@type": "Organization",
       "@id": "https://chiefofstaff.quest/#organization",
-      name: "Chief of Staff Quest",
-      alternateName: "Chief of Staff Recruitment Agency",
+      name: "Chief of Staff Recruitment Agency Quest",
+      alternateName: ["Chief of Staff Quest", "ChiefOfStaffQuest"],
       url: "https://chiefofstaff.quest",
-      logo: "https://chiefofstaff.quest/logo.png",
-      description: "UK-based Chief of Staff recruitment agency connecting professionals with executive CoS opportunities.",
+      logo: "https://chiefofstaff.quest/icon.svg",
+      description: "UK-based Chief of Staff recruitment agency aggregating CoS job opportunities from top companies. Free job board for professionals.",
       address: {
         "@type": "PostalAddress",
         addressLocality: "London",
         addressCountry: "GB"
       },
       sameAs: [
-        "https://www.linkedin.com/company/chief-of-staff-quest"
+        "https://www.linkedin.com/in/dankeegan"
       ],
       areaServed: [
-        { "@type": "Country", name: "United Kingdom" },
-        { "@type": "Country", name: "United States" },
-        { "@type": "Place", name: "Europe" }
-      ],
-      serviceType: "Chief of Staff Recruitment Agency"
+        { "@type": "Country", name: "United Kingdom" }
+      ]
     },
     {
       "@type": "WebPage",
       "@id": "https://chiefofstaff.quest/#webpage",
       url: "https://chiefofstaff.quest",
-      name: "Chief of Staff Recruitment Agency UK | Chief of Staff Jobs",
-      description: "The UK's leading Chief of Staff recruitment agency. Browse CoS jobs at top companies. Free job board for employers.",
+      name: "Chief of Staff Recruitment Agency 🎯 UK CoS Jobs",
+      description: "Chief of Staff recruitment agency aggregating CoS jobs from top companies. Browse opportunities in London, UK and remote. Free for candidates.",
       isPartOf: { "@id": "https://chiefofstaff.quest/#website" },
       about: { "@id": "https://chiefofstaff.quest/#organization" },
       primaryImageOfPage: {
         "@type": "ImageObject",
         url: "https://chiefofstaff.quest/og-image.png"
-      },
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: ["h1", ".hero-description"]
       }
-    },
-    {
-      "@type": "EmploymentAgency",
-      "@id": "https://chiefofstaff.quest/#agency",
-      name: "Chief of Staff Quest - Chief of Staff Recruitment Agency",
-      description: "Specialist Chief of Staff recruitment agency based in London, UK.",
-      url: "https://chiefofstaff.quest",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "London",
-        addressCountry: "GB"
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: 51.5074,
-        longitude: -0.1278
-      },
-      priceRange: "Free for candidates"
     },
     {
       "@type": "FAQPage",
@@ -93,7 +69,7 @@ const homepageJsonLd = {
           name: "What is a Chief of Staff recruitment agency?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "A Chief of Staff recruitment agency specialises in placing professionals in Chief of Staff roles. These agencies understand the unique requirements of the CoS position and connect qualified candidates with companies seeking strategic executive support.",
+            text: "A Chief of Staff recruitment agency helps professionals find Chief of Staff roles. Chief of Staff Recruitment Agency Quest aggregates CoS job opportunities from LinkedIn, company career pages, and job boards so you can discover opportunities in one place.",
           },
         },
         {
@@ -135,8 +111,8 @@ const homepageJsonLd = {
     },
     {
       "@type": "VideoObject",
-      name: "What is a Chief of Staff? - Chief of Staff Role Explained",
-      description: "Learn what a Chief of Staff does and how this strategic executive role works. Our Chief of Staff recruitment agency explains the CoS position, typical responsibilities, salary expectations in the UK, and career paths. Discover how Chiefs of Staff support CEOs, drive cross-functional initiatives, and accelerate their careers into leadership roles.",
+      name: "What is a Chief of Staff? - Role Explained",
+      description: "Learn what a Chief of Staff does and how this strategic executive role works. Understand the CoS position, typical responsibilities, salary expectations in the UK, and career paths.",
       thumbnailUrl: "https://img.youtube.com/vi/VH3GyrNeBxg/maxresdefault.jpg",
       uploadDate: "2024-01-15",
       duration: "PT5M30S",
@@ -144,10 +120,10 @@ const homepageJsonLd = {
       embedUrl: "https://www.youtube.com/embed/VH3GyrNeBxg",
       publisher: {
         "@type": "Organization",
-        name: "Chief of Staff Quest",
+        name: "Chief of Staff Recruitment Agency Quest",
         logo: {
           "@type": "ImageObject",
-          url: "https://chiefofstaff.quest/logo.png"
+          url: "https://chiefofstaff.quest/icon.svg"
         }
       }
     }
@@ -323,7 +299,7 @@ export default function Home() {
               <span>Business News</span>
             </a>
             <div className="inline-block px-4 py-2 rounded-full border border-amber-500/50 bg-amber-500/10 text-amber-400 text-sm font-medium">
-              UK&apos;s #1 Chief of Staff Recruitment Agency
+              🎯 Chief of Staff Recruitment Agency UK
             </div>
           </div>
 
@@ -334,7 +310,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="hero-description text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            The UK&apos;s leading <strong>Chief of Staff recruitment agency</strong> connecting ambitious professionals with strategic CoS roles at top companies in tech, startups, consulting, and enterprise.
+            <strong>Chief of Staff recruitment agency</strong> aggregating CoS job opportunities from top UK companies. Browse roles in tech, startups, consulting, and enterprise.
           </p>
 
           {/* Search Bar with Country Filter */}
@@ -889,7 +865,7 @@ export default function Home() {
                 </div>
               </Link>
               <p className="text-gray-400 mb-4">
-                The UK&apos;s leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles.
+                Chief of Staff recruitment agency aggregating CoS job opportunities from top UK companies.
               </p>
               <p className="text-gray-400 text-sm">
                 Independent job aggregation and career guidance for aspiring Chiefs of Staff.

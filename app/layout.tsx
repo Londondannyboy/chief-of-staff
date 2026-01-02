@@ -4,17 +4,17 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// Site-wide schema with LocalBusiness for UK targeting
+// Site-wide schema - truthful representation as job aggregator
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebSite",
       "@id": "https://chiefofstaff.quest/#website",
-      name: "Chief of Staff Quest",
-      alternateName: "Chief of Staff Recruitment Agency",
+      name: "Chief of Staff Recruitment Agency Quest",
+      alternateName: ["Chief of Staff Quest", "ChiefOfStaffQuest"],
       url: "https://chiefofstaff.quest",
-      description: "Chief of Staff recruitment agency connecting ambitious professionals with Chief of Staff roles at top companies. Find CoS jobs in tech, startups, enterprise, and consulting.",
+      description: "Chief of Staff recruitment agency aggregating CoS job opportunities from top companies. Browse Chief of Staff jobs in London, UK and remote.",
       inLanguage: "en-GB",
       publisher: {
         "@id": "https://chiefofstaff.quest/#organization"
@@ -23,7 +23,7 @@ const jsonLd = {
         "@type": "SearchAction",
         target: {
           "@type": "EntryPoint",
-          urlTemplate: "https://chiefofstaff.quest/?q={search_term_string}",
+          urlTemplate: "https://chiefofstaff.quest/jobs?q={search_term_string}",
         },
         "query-input": "required name=search_term_string",
       },
@@ -31,109 +31,90 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": "https://chiefofstaff.quest/#organization",
-      name: "Chief of Staff Quest",
-      alternateName: "Chief of Staff Recruitment Agency UK",
+      name: "Chief of Staff Recruitment Agency Quest",
+      alternateName: ["Chief of Staff Quest", "ChiefOfStaffQuest"],
       url: "https://chiefofstaff.quest",
       logo: "https://chiefofstaff.quest/icon.svg",
-      description: "UK-based Chief of Staff recruitment agency specialising in placing high-calibre professionals in strategic CoS roles at leading organisations across tech, finance, consulting, and startups.",
+      description: "UK-based Chief of Staff recruitment agency aggregating CoS job opportunities from LinkedIn, company career pages, and job boards. Free job board for Chief of Staff professionals.",
       address: {
         "@type": "PostalAddress",
         addressLocality: "London",
-        addressRegion: "Greater London",
         addressCountry: "GB"
       },
       areaServed: [
-        { "@type": "Country", "name": "United Kingdom" },
-        { "@type": "Country", "name": "United States" },
-        { "@type": "Place", "name": "Europe" }
+        { "@type": "Country", "name": "United Kingdom" }
       ],
       knowsAbout: [
         "Chief of Staff Recruitment",
         "Chief of Staff Jobs UK",
         "CoS Careers",
         "Executive Support Roles",
-        "Strategic Operations",
-        "CEO Right Hand",
-        "Chief of Staff London"
+        "Strategic Operations"
       ],
+      founder: {
+        "@id": "https://chiefofstaff.quest/#dankeegan"
+      }
     },
     {
-      "@type": "LocalBusiness",
-      "@id": "https://chiefofstaff.quest/#localbusiness",
-      name: "Chief of Staff Quest - Chief of Staff Recruitment Agency",
-      description: "London-based Chief of Staff recruitment agency helping UK professionals find strategic CoS roles.",
-      url: "https://chiefofstaff.quest",
-      telephone: "+44-20-0000-0000",
-      email: "hello@chiefofstaff.quest",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "London",
-        addressLocality: "London",
-        addressRegion: "Greater London",
-        postalCode: "EC1",
-        addressCountry: "GB"
+      "@type": "Person",
+      "@id": "https://chiefofstaff.quest/#dankeegan",
+      name: "Dan Keegan",
+      jobTitle: "Founder",
+      description: "Former Head of Global Operations at Transmission Agency with 20+ years of strategic operations leadership experience. Founded Chief of Staff Recruitment Agency Quest to help professionals discover CoS opportunities.",
+      image: {
+        "@type": "ImageObject",
+        url: "https://chiefofstaff.quest/dan-keegan.webp",
+        width: 400,
+        height: 400
       },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: 51.5074,
-        longitude: -0.1278
+      worksFor: {
+        "@id": "https://chiefofstaff.quest/#organization"
       },
-      openingHoursSpecification: {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "09:00",
-        closes: "18:00"
+      alumniOf: {
+        "@type": "Organization",
+        name: "Transmission Agency"
       },
-      priceRange: "Free",
-      currenciesAccepted: "GBP",
-      paymentAccepted: "Free Service"
-    },
-    {
-      "@type": "Service",
-      "@id": "https://chiefofstaff.quest/#service",
-      name: "Chief of Staff Recruitment",
-      provider: { "@id": "https://chiefofstaff.quest/#organization" },
-      description: "Specialist recruitment service connecting professionals with Chief of Staff positions at leading UK and global companies.",
-      areaServed: { "@type": "Country", "name": "United Kingdom" },
-      serviceType: "Recruitment Agency"
+      knowsAbout: [
+        "Strategic Operations",
+        "Executive Partnership",
+        "Cross-Functional Leadership"
+      ],
+      sameAs: [
+        "https://www.linkedin.com/in/dankeegan"
+      ]
     }
   ],
 };
 
 export const metadata: Metadata = {
-  title: "Chief of Staff Recruitment Agency | Chief of Staff Jobs",
+  title: "Chief of Staff Recruitment Agency 🎯 UK CoS Jobs",
   description:
-    "Chief of Staff recruitment agency connecting ambitious professionals with CoS roles at top companies. Find Chief of Staff jobs in tech, startups, enterprise, consulting, and more.",
-  authors: [{ name: "Chief of Staff Quest" }],
+    "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board aggregating opportunities from top companies. Find your next Chief of Staff role.",
+  authors: [{ name: "Dan Keegan", url: "https://chiefofstaff.quest" }],
   keywords: [
     "chief of staff recruitment agency",
     "chief of staff jobs",
     "chief of staff recruitment",
     "cos jobs",
     "chief of staff careers",
-    "chief of staff roles",
-    "ceo chief of staff",
-    "chief of staff tech",
-    "chief of staff startup",
-    "executive operations",
-    "strategic operations",
-    "chief of staff salary",
+    "chief of staff roles uk",
+    "chief of staff london",
     "chief of staff job board",
-    "cos recruitment",
+    "cos recruitment uk",
   ],
   robots: "index, follow",
   openGraph: {
-    title: "Chief of Staff Recruitment Agency | Chief of Staff Jobs",
+    title: "Chief of Staff Recruitment Agency 🎯 UK CoS Jobs",
     description:
-      "Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles at leading companies worldwide.",
-    siteName: "Chief of Staff Quest",
+      "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board aggregating opportunities from top companies.",
+    siteName: "Chief of Staff Recruitment Agency Quest",
     locale: "en_GB",
     images: [
       {
         url: "https://chiefofstaff.quest/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Chief of Staff Recruitment Agency - Find CoS Jobs",
+        alt: "Chief of Staff Recruitment Agency Quest - UK CoS Jobs",
         type: "image/png",
       },
     ],
@@ -141,17 +122,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chief of Staff Recruitment Agency | CoS Jobs",
+    title: "Chief of Staff Recruitment Agency 🎯 UK CoS Jobs",
     description:
-      "Chief of Staff recruitment agency connecting professionals with strategic CoS roles at top companies.",
+      "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board for CoS professionals.",
     images: ["https://chiefofstaff.quest/og-image.png"],
   },
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: [
-      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
   alternates: {
@@ -167,6 +145,12 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <head>
+        {/* Preconnect to external image sources for faster loading */}
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://images.pexels.com" />
+        <link rel="preconnect" href="https://videos.pexels.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.pexels.com" />
         {/* Hreflang for UK targeting */}
         <link rel="alternate" hrefLang="en-GB" href="https://chiefofstaff.quest" />
         <link rel="alternate" hrefLang="en" href="https://chiefofstaff.quest" />

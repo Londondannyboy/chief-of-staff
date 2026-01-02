@@ -6,12 +6,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
+    // Homepage - primary target for "chief of staff recruitment agency"
     {
       url: baseUrl,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
+    // Jobs pages
     {
       url: `${baseUrl}/jobs`,
       lastModified: new Date(),
@@ -24,6 +26,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 0.95,
     },
+    {
+      url: `${baseUrl}/chief-of-staff-jobs-london`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    // Career guides
+    {
+      url: `${baseUrl}/how-to-become-chief-of-staff`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/chief-of-staff-salary-uk`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    // Contact
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),

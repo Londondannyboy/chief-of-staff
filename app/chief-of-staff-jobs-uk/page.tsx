@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import { chiefOfStaffJobs } from "../../lib/jobs-data";
 
 export const metadata: Metadata = {
-  title: "Chief of Staff Jobs UK | Chief of Staff Recruitment Agency",
-  description: "Find Chief of Staff jobs in the UK. Our Chief of Staff recruitment agency aggregates CoS roles across London, Manchester, Edinburgh and remote UK positions.",
+  title: "Chief of Staff Jobs UK 🇬🇧 London, Manchester & Remote CoS Roles",
+  description: "🎯 Browse Chief of Staff jobs across the UK. Our specialist CoS recruitment agency connects you with roles at top companies in London, Manchester, Edinburgh & remote positions.",
   keywords: [
     "chief of staff jobs uk",
     "chief of staff recruitment agency uk",
@@ -13,10 +13,13 @@ export const metadata: Metadata = {
     "chief of staff manchester",
     "chief of staff edinburgh",
     "uk chief of staff roles",
+    "chief of staff jobs london",
+    "remote chief of staff uk",
+    "cos recruitment agency uk",
   ],
   openGraph: {
-    title: "Chief of Staff Jobs UK | Chief of Staff Recruitment Agency",
-    description: "Find Chief of Staff jobs in the UK. Browse CoS roles in London and across the United Kingdom.",
+    title: "Chief of Staff Jobs UK 🇬🇧 London, Manchester & Remote",
+    description: "🎯 Browse Chief of Staff jobs across the UK. Connect with CoS roles at top companies in London, Manchester, Edinburgh & remote.",
     locale: "en_GB",
   },
   alternates: {

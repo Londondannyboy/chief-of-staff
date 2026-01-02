@@ -1,6 +1,6 @@
-# Chief of Staff Quest - Chief of Staff Recruitment Agency
+# Chief of Staff Recruitment Agency Quest
 
-> Chief of Staff Quest is the UK's leading Chief of Staff recruitment agency, connecting ambitious professionals with strategic CoS roles at top companies.
+> Chief of Staff Recruitment Agency Quest aggregates CoS job opportunities from top UK companies, helping professionals discover Chief of Staff roles in tech, startups, consulting, and enterprise.
 
 ## What We Do
 

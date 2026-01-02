@@ -9,19 +9,22 @@ import {
 } from "../../lib/jobs-data";
 
 export const metadata: Metadata = {
-  title: "Chief of Staff Jobs UK & US | Browse CoS Roles | Chief of Staff Recruitment Agency",
+  title: "Chief of Staff Jobs 💼 Browse 40+ Live CoS Roles Worldwide",
   description:
-    "Browse Chief of Staff jobs in the UK, US, and worldwide. Our Chief of Staff recruitment agency aggregates CoS roles from top companies in tech, finance, healthcare, and startups.",
+    "🔍 Browse 40+ Chief of Staff jobs at Google, Amazon, Barclays & startups. Filter by location, salary & industry. Apply directly to top CoS roles in UK, US & remote.",
   keywords: [
     "chief of staff jobs",
     "chief of staff jobs uk",
-    "chief of staff recruitment agency",
     "cos jobs",
     "chief of staff roles",
+    "chief of staff vacancies",
+    "cos job board",
+    "chief of staff openings",
+    "executive cos roles",
   ],
   openGraph: {
-    title: "Chief of Staff Jobs | Browse CoS Roles",
-    description: "Browse Chief of Staff jobs from our recruitment agency. Find CoS roles in the UK, US, and worldwide.",
+    title: "Chief of Staff Jobs 💼 Browse 40+ Live CoS Roles",
+    description: "🔍 Browse 40+ Chief of Staff jobs at Google, Amazon, Barclays & startups. Apply directly to top CoS roles.",
   },
   alternates: {
     canonical: "https://chiefofstaff.quest/jobs",
