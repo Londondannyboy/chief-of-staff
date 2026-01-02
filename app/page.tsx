@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { chiefOfStaffJobs } from "../lib/jobs-data";
+import { LiteYouTube } from "./components/LiteYouTube";
 
 // Homepage-specific structured data - fully optimized for "chief of staff recruitment agency"
 const homepageJsonLd = {
@@ -25,7 +26,7 @@ const homepageJsonLd = {
       alternateName: "Chief of Staff Recruitment Agency",
       url: "https://chiefofstaff.quest",
       logo: "https://chiefofstaff.quest/logo.png",
-      description: "UK-based Chief of Staff recruitment agency specialising in executive CoS placements.",
+      description: "UK-based Chief of Staff recruitment agency connecting professionals with executive CoS opportunities.",
       address: {
         "@type": "PostalAddress",
         addressLocality: "London",
@@ -207,25 +208,9 @@ const stats = [
 ];
 
 // Use real jobs from the shared data file
-// Sort jobs: UK first, then others. Show 12 jobs.
-const sortedJobs = [...chiefOfStaffJobs].sort((a, b) => {
-  if (a.country === 'United Kingdom' && b.country !== 'United Kingdom') return -1;
-  if (a.country !== 'United Kingdom' && b.country === 'United Kingdom') return 1;
-  return 0;
-});
-const featuredJobs = sortedJobs.slice(0, 12);
-
-// Real companies from our job listings
-const companies = [
-  "Barclays",
-  "Northrop Grumman",
-  "MongoDB",
-  "Scale AI",
-  "Dataiku",
-  "Compass",
-  "Zipline",
-  "Addepar",
-];
+// Filter to UK jobs only by default. Show up to 12 jobs.
+const ukJobs = chiefOfStaffJobs.filter((job) => job.country === 'United Kingdom');
+const featuredJobs = ukJobs.slice(0, 12);
 
 const careerPaths = [
   {
@@ -292,10 +277,11 @@ export default function Home() {
             muted
             loop
             playsInline
+            preload="none"
             className="absolute w-full h-full object-cover opacity-30"
-            poster="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80"
+            poster="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=60&fm=webp"
           >
-            <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+            <source src="https://videos.pexels.com/video-files/3129671/3129671-sd_640_360_30fps.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/70 via-[#0a0a0f]/50 to-[#0a0a0f]" />
         </div>
@@ -361,6 +347,7 @@ export default function Home() {
               />
               <select
                 defaultValue="UK"
+                aria-label="Select country or region"
                 className="px-4 py-4 bg-gray-900/80 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-amber-500 min-w-[140px]"
               >
                 <option value="UK">🇬🇧 United Kingdom</option>
@@ -376,19 +363,25 @@ export default function Home() {
 
           <div className="flex flex-wrap justify-center gap-3 text-sm">
             <span className="text-gray-400">Popular:</span>
-            <a href="#jobs" className="text-amber-400 hover:underline">CEO Chief of Staff</a>
-            <a href="#jobs" className="text-amber-400 hover:underline">Startup CoS</a>
-            <a href="#jobs" className="text-amber-400 hover:underline">London</a>
-            <a href="#jobs" className="text-amber-400 hover:underline">Remote UK</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">CEO Chief of Staff</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">Startup CoS</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">London</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">Remote UK</a>
           </div>
 
-          {/* Scroll indicator */}
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <div className="w-6 h-10 rounded-full border-2 border-amber-500/50 flex items-start justify-center p-2">
-              <div className="w-1 h-3 bg-amber-500 rounded-full animate-pulse" />
-            </div>
-          </div>
         </div>
+
+        {/* Scroll indicator - positioned below hero content */}
+        <a
+          href="#jobs"
+          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce z-20 flex flex-col items-center gap-2 group"
+          aria-label="Scroll to browse Chief of Staff jobs"
+        >
+          <span className="text-xs text-gray-400 group-hover:text-amber-400 transition-colors">Browse Jobs</span>
+          <div className="w-6 h-10 rounded-full border-2 border-amber-500/50 group-hover:border-amber-400 flex items-start justify-center p-2 transition-colors">
+            <div className="w-1 h-3 bg-amber-500 rounded-full animate-pulse" />
+          </div>
+        </a>
       </section>
 
       {/* Stats Bar */}
@@ -416,76 +409,28 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-black mb-8 text-center">
               Your <span className="text-amber-400">Chief of Staff Recruitment Agency</span>
             </h2>
-            <div className="prose prose-lg prose-invert max-w-none">
-              <p className="text-xl text-gray-300 mb-6">
+            <div className="prose prose-lg prose-invert max-w-none leading-relaxed">
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 As a specialised Chief of Staff recruitment agency, we connect exceptional professionals with strategic CoS roles at leading organisations. The Chief of Staff role has emerged as one of the most impactful positions in modern business.
               </p>
-              <p className="text-lg text-gray-400 mb-6">
-                A Chief of Staff serves as a force multiplier for executives—managing cross-functional initiatives, driving strategic projects, and ensuring organisational priorities are executed. According to the <a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">Chief of Staff Association</a>, demand for CoS roles has grown 300% over the past five years. The <a href="https://www.bbc.co.uk/news/business" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">BBC</a> has also reported on the rising importance of this strategic role in UK businesses.
+              <p className="text-lg text-gray-400 mb-8 leading-relaxed">
+                A Chief of Staff serves as a force multiplier for executives—managing cross-functional initiatives, driving strategic projects, and ensuring organisational priorities are executed. According to the <a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="text-amber-400 underline hover:text-amber-300">Chief of Staff Association</a>, demand for CoS roles has grown 300% over the past five years. The <a href="https://www.bbc.co.uk/news/business" target="_blank" rel="noopener noreferrer" className="text-amber-400 underline hover:text-amber-300">BBC</a> has also reported on the rising importance of this strategic role in UK businesses.
               </p>
-              <p className="text-lg text-gray-400">
+              <p className="text-lg text-gray-400 leading-relaxed">
                 Whether you are a consultant looking to go in-house, an operator ready for executive exposure, or a rising leader seeking the ultimate career accelerator, our Chief of Staff recruitment agency aggregates CoS jobs from top companies to help you find your next role.
               </p>
             </div>
 
-            {/* YouTube Videos */}
+            {/* YouTube Video - Lazy loaded for performance */}
             <div className="mt-12">
               <h3 className="text-2xl font-bold text-center mb-8">Learn About the Chief of Staff Role</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Video 1 - Main explainer */}
-                <div>
-                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
-                    <iframe
-                      src="https://www.youtube.com/embed/VH3GyrNeBxg"
-                      title="What is a Chief of Staff? - Role Explained"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
-                    />
-                  </div>
-                  <p className="text-gray-400 text-sm mt-2 text-center">What is a Chief of Staff?</p>
+              <div className="max-w-2xl mx-auto">
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
+                  <LiteYouTube videoId="VH3GyrNeBxg" title="What is a Chief of Staff? - Role Explained" />
                 </div>
-                {/* Video 2 - Career path */}
-                <div>
-                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
-                    <iframe
-                      src="https://www.youtube.com/embed/lM5h6lDkPxA"
-                      title="Chief of Staff Career Path and Responsibilities"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
-                    />
-                  </div>
-                  <p className="text-gray-400 text-sm mt-2 text-center">Chief of Staff Career Path</p>
-                </div>
-                {/* Video 3 - Day in the life */}
-                <div>
-                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
-                    <iframe
-                      src="https://www.youtube.com/embed/9L3rmCZQ0lY"
-                      title="Day in the Life of a Chief of Staff"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
-                    />
-                  </div>
-                  <p className="text-gray-400 text-sm mt-2 text-center">Day in the Life of a CoS</p>
-                </div>
-                {/* Video 4 - Skills needed */}
-                <div>
-                  <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-800">
-                    <iframe
-                      src="https://www.youtube.com/embed/PmDVDjgB6aU"
-                      title="Chief of Staff Skills and Qualifications"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
-                    />
-                  </div>
-                  <p className="text-gray-400 text-sm mt-2 text-center">Skills You Need as Chief of Staff</p>
-                </div>
+                <p className="text-gray-400 text-sm mt-3 text-center">What is a Chief of Staff?</p>
               </div>
-              <p className="text-center text-gray-500 text-sm mt-4">
+              <p className="text-center text-gray-400 text-sm mt-6">
                 Learn more about the Chief of Staff role and how our recruitment agency can help you land your next CoS position.
               </p>
             </div>
@@ -664,27 +609,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Companies */}
-      <section className="py-16 bg-[#0d0d15] border-y border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <p className="text-gray-400 uppercase tracking-wider text-sm">
-              Companies hiring through our Chief of Staff recruitment agency
-            </p>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-            {companies.map((company) => (
-              <div
-                key={company}
-                className="text-2xl font-bold text-gray-600 hover:text-gray-400 transition-colors"
-              >
-                {company}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Industry Resources */}
       <section className="py-16 bg-[#0a0a0f]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -832,6 +756,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Meet Your Expert Section - E-E-A-T */}
+      <section className="py-20 bg-gradient-to-b from-[#0a0a0f] to-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Meet Your <span className="text-amber-400">Chief of Staff Expert</span>
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Our Chief of Staff recruitment agency is led by someone who&apos;s done the job—not just recruited for it.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 flex flex-col md:flex-row gap-8 items-center">
+              <div className="flex-shrink-0">
+                <img
+                  src="/dan-keegan.webp"
+                  alt="Dan Keegan - Former Head of Global Operations at Transmission Agency, now Chief of Staff recruitment expert"
+                  title="Dan Keegan - Founder of Chief of Staff Quest"
+                  width="200"
+                  height="200"
+                  className="w-48 h-48 rounded-xl object-cover border-2 border-amber-500/50"
+                />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-2">Dan Keegan</h3>
+                <p className="text-amber-400 font-medium mb-4">Founder | Former Head of Global Operations</p>
+                <p className="text-gray-300 mb-4">
+                  Before founding Chief of Staff Quest, Dan served as <strong>Head of Global Operations at Transmission Agency</strong>—a role that mirrors the Chief of Staff function: strategic operations, executive partnership, cross-functional leadership, and driving company-wide initiatives.
+                </p>
+                <p className="text-gray-400 mb-4">
+                  With <strong>20+ years of experience</strong> in operations and strategic leadership, Dan understands what makes a great Chief of Staff because he&apos;s lived it. This first-hand experience informs how we connect talented professionals with the right CoS opportunities.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-amber-600/20 text-amber-400 text-sm rounded-full">Head of Global Operations</span>
+                  <span className="px-3 py-1 bg-purple-600/20 text-purple-400 text-sm rounded-full">Transmission Agency</span>
+                  <span className="px-3 py-1 bg-green-600/20 text-green-400 text-sm rounded-full">20+ Years Leadership</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section id="faq" className="py-24 bg-[#0d0d15]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -904,42 +871,109 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#0a0a0f] border-t border-gray-800 py-16">
+      <footer className="bg-[#050508] border-t border-gray-800 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
-            <div className="max-w-sm">
+          {/* Main footer grid - 6 columns */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
+            {/* Brand column */}
+            <div className="md:col-span-2 lg:col-span-2">
               <Link href="/" className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">🎯</span>
-                <span className="font-bold text-xl">
-                  <span className="text-amber-400">Chief of Staff</span> Quest
-                </span>
+                <span className="text-3xl">🎯</span>
+                <div className="flex flex-col">
+                  <span className="text-2xl font-bold">
+                    <span className="text-amber-400">Chief of Staff</span> Quest
+                  </span>
+                  <span className="text-xs text-amber-400 uppercase tracking-wider">
+                    Recruitment Agency UK
+                  </span>
+                </div>
               </Link>
+              <p className="text-gray-400 mb-4">
+                The UK&apos;s leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles.
+              </p>
               <p className="text-gray-400 text-sm">
-                The UK&apos;s leading Chief of Staff recruitment agency connecting ambitious professionals with strategic CoS roles at top companies.
+                Independent job aggregation and career guidance for aspiring Chiefs of Staff.
               </p>
             </div>
-            <div className="flex flex-wrap gap-8">
-              <div>
-                <h4 className="font-bold text-white mb-4">Quick Links</h4>
-                <ul className="space-y-2 text-gray-400 text-sm">
-                  <li><Link href="/" className="hover:text-amber-400">Home</Link></li>
-                  <li><Link href="/jobs" className="hover:text-amber-400">Browse Jobs</Link></li>
-                  <li><Link href="/contact" className="hover:text-amber-400">Post a Job</Link></li>
-                  <li><Link href="/contact" className="hover:text-amber-400">Contact</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-bold text-white mb-4">Resources</h4>
-                <ul className="space-y-2 text-gray-400 text-sm">
-                  <li><a href="https://www.bbc.co.uk/news/business" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">BBC Business</a></li>
-                  <li><a href="https://csa.org" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">Chief of Staff Association</a></li>
-                  <li><a href="https://hbr.org" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">Harvard Business Review</a></li>
-                </ul>
+
+            {/* CoS Jobs column */}
+            <div>
+              <div className="font-bold text-white mb-4" role="heading" aria-level={2}>CoS Jobs</div>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link href="/jobs" className="hover:text-amber-400 underline">All CoS Jobs</Link></li>
+                <li><Link href="/chief-of-staff-jobs-uk" className="hover:text-amber-400 underline">Jobs UK</Link></li>
+                <li><Link href="/chief-of-staff-jobs-london" className="hover:text-amber-400 underline">Jobs London</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Remote Jobs</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Startup CoS</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Enterprise CoS</Link></li>
+              </ul>
+            </div>
+
+            {/* Career Guides column */}
+            <div>
+              <div className="font-bold text-white mb-4" role="heading" aria-level={2}>Career Guides</div>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link href="/how-to-become-chief-of-staff" className="hover:text-amber-400 underline">How to Become CoS</Link></li>
+                <li><Link href="/chief-of-staff-salary-uk" className="hover:text-amber-400 underline">Salary Guide UK</Link></li>
+                <li><Link href="/#faq" className="hover:text-amber-400 underline">CoS FAQ</Link></li>
+                <li><Link href="/#about" className="hover:text-amber-400 underline">What is a CoS?</Link></li>
+                <li><Link href="/#faq" className="hover:text-amber-400 underline">CoS vs EA</Link></li>
+                <li><Link href="/#faq" className="hover:text-amber-400 underline">Career Paths</Link></li>
+              </ul>
+            </div>
+
+            {/* Industries column */}
+            <div>
+              <div className="font-bold text-white mb-4" role="heading" aria-level={2}>Industries</div>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Tech & SaaS</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Financial Services</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Private Equity</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Consulting</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Healthcare</Link></li>
+                <li><Link href="/#jobs" className="hover:text-amber-400 underline">Nonprofits</Link></li>
+              </ul>
+            </div>
+
+            {/* Recruitment column */}
+            <div>
+              <div className="font-bold text-white mb-4" role="heading" aria-level={2}>Recruitment</div>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link href="/" className="hover:text-amber-400 underline">Chief of Staff Recruitment Agency</Link></li>
+                <li><Link href="/contact" className="hover:text-amber-400 underline">Post a Job Free</Link></li>
+                <li><Link href="/contact" className="hover:text-amber-400 underline">Contact Us</Link></li>
+                <li><a href="https://www.linkedin.com/in/dankeegan" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 underline">LinkedIn</a></li>
+              </ul>
+              <div className="mt-4">
+                <Link
+                  href="/contact"
+                  className="inline-block bg-amber-500 hover:bg-amber-400 text-black font-bold py-2 px-4 rounded text-sm transition-all"
+                >
+                  Post a Job
+                </Link>
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} Chief of Staff Quest - Chief of Staff Recruitment Agency UK. All rights reserved.</p>
+
+          {/* Related Sites */}
+          <div className="border-t border-gray-800 pt-8 mb-8">
+            <div className="text-center mb-4">
+              <span className="text-gray-500 text-sm">Part of the Quest Network</span>
+            </div>
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+              <a href="https://esportsjobs.quest" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 underline">Esports Jobs Quest</a>
+              <a href="https://fractional.quest" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 underline">Fractional Quest</a>
+              <a href="https://esportsevent.quest" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 underline">Esports Event Quest</a>
+              <a href="https://esportsproduction.quest" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 underline">Esports Production Quest</a>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="text-center text-gray-400 text-sm border-t border-gray-800 pt-8">
+            <p>&copy; {new Date().getFullYear()} Chief of Staff Quest - <Link href="/" className="hover:text-amber-400 underline">Chief of Staff Recruitment Agency</Link> UK. All rights reserved.</p>
+            <p className="mt-2 text-gray-500">
+              London, United Kingdom
+            </p>
           </div>
         </div>
       </footer>
