@@ -253,11 +253,10 @@ export default function Home() {
             muted
             loop
             playsInline
-            preload="none"
-            className="absolute w-full h-full object-cover opacity-30"
-            poster="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=60&fm=webp"
+            preload="auto"
+            className="absolute w-full h-full object-cover opacity-40"
           >
-            <source src="https://videos.pexels.com/video-files/3129671/3129671-sd_640_360_30fps.mp4" type="video/mp4" />
+            <source src="/hero-video.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/70 via-[#0a0a0f]/50 to-[#0a0a0f]" />
         </div>
