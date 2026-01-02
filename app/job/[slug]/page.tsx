@@ -251,7 +251,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
             <img
               src={job.hero_image}
               alt={job.hero_image_alt || `${job.title} at ${job.company}`}
-              className="w-full h-full object-cover opacity-30"
+              className="w-full h-full object-cover opacity-50"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/50 to-[#0a0a0f]" />
           </div>

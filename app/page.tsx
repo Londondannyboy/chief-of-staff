@@ -254,7 +254,8 @@ export default function Home() {
             loop
             playsInline
             preload="auto"
-            className="absolute w-full h-full object-cover opacity-40"
+            aria-hidden="true"
+            className="absolute w-full h-full object-cover opacity-60"
           >
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
@@ -333,12 +334,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-3 text-sm">
+          <div className="flex flex-wrap justify-center items-center gap-4 text-sm">
             <span className="text-gray-400">Popular:</span>
-            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">CEO Chief of Staff</a>
-            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">Startup CoS</a>
-            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">London</a>
-            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300">Remote UK</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300 py-2 px-1">CEO Chief of Staff</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300 py-2 px-1">Startup CoS</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300 py-2 px-1">London</a>
+            <a href="#jobs" className="text-amber-400 underline hover:text-amber-300 py-2 px-1">Remote UK</a>
           </div>
 
         </div>
@@ -346,12 +347,12 @@ export default function Home() {
         {/* Scroll indicator - positioned below hero content */}
         <a
           href="#jobs"
-          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce z-20 flex flex-col items-center gap-2 group"
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce z-20 flex flex-col items-center gap-2 group p-4"
           aria-label="Scroll to browse Chief of Staff jobs"
         >
           <span className="text-xs text-gray-400 group-hover:text-amber-400 transition-colors">Browse Jobs</span>
-          <div className="w-6 h-10 rounded-full border-2 border-amber-500/50 group-hover:border-amber-400 flex items-start justify-center p-2 transition-colors">
-            <div className="w-1 h-3 bg-amber-500 rounded-full animate-pulse" />
+          <div className="w-8 h-12 rounded-full border-2 border-amber-500/50 group-hover:border-amber-400 flex items-start justify-center p-2 transition-colors">
+            <div className="w-1.5 h-4 bg-amber-500 rounded-full animate-pulse" />
           </div>
         </a>
       </section>
@@ -930,7 +931,7 @@ export default function Home() {
           {/* Related Sites */}
           <div className="border-t border-gray-800 pt-8 mb-8">
             <div className="text-center mb-4">
-              <span className="text-gray-500 text-sm">Part of the Quest Network</span>
+              <span className="text-gray-400 text-sm">Part of the Quest Network</span>
             </div>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
               <a href="https://esportsjobs.quest" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 underline">Esports Jobs Quest</a>
@@ -943,7 +944,7 @@ export default function Home() {
           {/* Copyright */}
           <div className="text-center text-gray-400 text-sm border-t border-gray-800 pt-8">
             <p>&copy; {new Date().getFullYear()} Chief of Staff Quest - <Link href="/" className="hover:text-amber-400 underline">Chief of Staff Recruitment Agency</Link> UK. All rights reserved.</p>
-            <p className="mt-2 text-gray-500">
+            <p className="mt-2 text-gray-400">
               London, United Kingdom
             </p>
           </div>

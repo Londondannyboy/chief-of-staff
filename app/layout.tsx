@@ -87,9 +87,9 @@ const jsonLd = {
 };
 
 export const metadata: Metadata = {
-  title: "Chief of Staff Recruitment Agency 🎯 UK CoS Jobs",
+  title: "Chief of Staff Recruitment Agency 🎯 UK Jobs & Careers",
   description:
-    "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board aggregating opportunities from top companies. Find your next Chief of Staff role.",
+    "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board with opportunities from top companies.",
   authors: [{ name: "Dan Keegan", url: "https://chiefofstaff.quest" }],
   keywords: [
     "chief of staff recruitment agency",
@@ -104,9 +104,9 @@ export const metadata: Metadata = {
   ],
   robots: "index, follow",
   openGraph: {
-    title: "Chief of Staff Recruitment Agency 🎯 UK CoS Jobs",
+    title: "Chief of Staff Recruitment Agency 🎯 UK Jobs & Careers",
     description:
-      "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board aggregating opportunities from top companies.",
+      "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board with opportunities from top companies.",
     siteName: "Chief of Staff Recruitment Agency Quest",
     locale: "en_GB",
     images: [
@@ -122,9 +122,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chief of Staff Recruitment Agency 🎯 UK CoS Jobs",
+    title: "Chief of Staff Recruitment Agency 🎯 UK Jobs & Careers",
     description:
-      "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board for CoS professionals.",
+      "Chief of Staff recruitment agency 🚀 Browse CoS jobs in London, UK & remote. Free job board with opportunities from top companies.",
     images: ["https://chiefofstaff.quest/og-image.png"],
   },
   icons: {
