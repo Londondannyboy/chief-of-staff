@@ -302,11 +302,8 @@ export default function Home() {
             </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-            <span className="block">CHIEF OF STAFF</span>
-            <span className="block bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
-              RECRUITMENT AGENCY
-            </span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight bg-gradient-to-r from-white via-amber-200 to-amber-400 bg-clip-text text-transparent">
+            Chief of Staff Recruitment Agency
           </h1>
           <p className="hero-description text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
             <strong>Chief of Staff recruitment agency</strong> aggregating CoS job opportunities from top UK companies. Browse roles in tech, startups, consulting, and enterprise.
