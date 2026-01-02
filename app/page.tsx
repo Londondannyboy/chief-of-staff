@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { chiefOfStaffJobs } from "../lib/jobs-data";
 import { LiteYouTube } from "./components/LiteYouTube";
+import { SearchForm } from "./components/SearchForm";
 
 // Homepage-specific structured data - honest representation
 const homepageJsonLd = {
@@ -257,7 +258,10 @@ export default function Home() {
             aria-hidden="true"
             className="absolute w-full h-full object-cover opacity-60"
           >
-            <source src="/hero-video.mp4" type="video/mp4" />
+            {/* Mux streaming - adaptive quality */}
+            <source src="https://stream.mux.com/4lCFD201CV25TXkCQ2oExSg5LVgbMuCJmH3emZHlNQ4c/medium.mp4" type="video/mp4" />
+            {/* Local fallback */}
+            <source src="/hero-video.webm" type="video/webm" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/70 via-[#0a0a0f]/50 to-[#0a0a0f]" />
         </div>
@@ -311,28 +315,7 @@ export default function Home() {
           </p>
 
           {/* Search Bar with Country Filter */}
-          <div className="max-w-3xl mx-auto mb-8">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <input
-                type="text"
-                placeholder="Search Chief of Staff jobs..."
-                className="flex-1 px-6 py-4 bg-gray-900/80 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500"
-              />
-              <select
-                defaultValue="UK"
-                aria-label="Select country or region"
-                className="px-4 py-4 bg-gray-900/80 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-amber-500 min-w-[140px]"
-              >
-                <option value="UK">🇬🇧 United Kingdom</option>
-                <option value="EU">🇪🇺 Europe</option>
-                <option value="Remote">🌍 Remote</option>
-                <option value="All">🌐 All Countries</option>
-              </select>
-              <button className="bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 px-8 rounded-xl transition-all btn-shine whitespace-nowrap">
-                Search Jobs
-              </button>
-            </div>
-          </div>
+          <SearchForm className="mb-8" />
 
           <div className="flex flex-wrap justify-center items-center gap-4 text-sm">
             <span className="text-gray-400">Popular:</span>
